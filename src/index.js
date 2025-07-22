@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import roles from './assets/roles.json';
 
+// Helper function to get role icon
+const getRoleIcon = (roleId) => {
+  try {
+    return require(`./assets/icons/${roleId}.png`);
+  } catch (error) {
+    return null; // Return null if icon doesn't exist
+  }
+};
+
 function PanelApp() {
   const [config, setConfig] = useState(null);
 
@@ -26,12 +35,25 @@ function PanelApp() {
     <div>
       {/* <pre>{JSON.stringify(config, null, 2)}</pre> */}
       <div>
-        {roles.map(role => (
-          <div key={role.id} style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
-            <h3>{role.name} ({role.team})</h3>
-            <p>{role.ability}</p>
-          </div>
-        ))}
+        {roles.map(role => {
+          const iconSrc = getRoleIcon(role.id);
+          return (
+            <div key={role.id} style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc', display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+              {iconSrc && (
+                <img 
+                  src={iconSrc} 
+                  alt={`${role.name} icon`}
+                  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }}
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              )}
+              <div style={{ flex: 1 }}>
+                <h3 style={{ margin: '0 0 5px 0' }}>{role.name}</h3>
+                <p style={{ margin: 0 }}>{role.ability}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
