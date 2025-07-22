@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Extension Config</title>
+    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+  </head>
+  <body>
+    <h2>Upload JSON Config</h2>
+    <input type="file" id="fileInput" accept=".json" />
+    <button id="uploadBtn">Save Config</button>
+
+    <script>
+      let authToken = '';
+      let broadcasterId = '';
+
+      Twitch.ext.onAuthorized((auth) => {
+        authToken = auth.token;
+        broadcasterId = auth.userId;
+      });
+
+      document.getElementById('uploadBtn').addEventListener('click', () => {
+        const file = document.getElementById('fileInput').files[0];
+        if (!file) return alert("Please select a file");
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const jsonData = JSON.parse(e.target.result);
+
+            Twitch.ext.configuration.set(
+              'broadcaster',
+              '1', // version
+              JSON.stringify(jsonData)
+            );
+
+            alert('Configuration saved!');
+          } catch (err) {
+            alert('Invalid JSON');
+          }
+        };
+        reader.readAsText(file);
+      });
+    </script>
+  </body>
+</html>
