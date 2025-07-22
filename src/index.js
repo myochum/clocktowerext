@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import roles from './assets/roles.json';
 
 function PanelApp() {
   const [config, setConfig] = useState(null);
@@ -20,12 +20,19 @@ function PanelApp() {
     });
   }, []);
 
-  if (!config) return <div>Loading config...</div>;
+  // if (!config) return <div>Loading config...</div>;
 
   return (
     <div>
-      <h1>Panel</h1>
-      <pre>{JSON.stringify(config, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(config, null, 2)}</pre> */}
+      <div>
+        {roles.map(role => (
+          <div key={role.id} style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
+            <h3>{role.name} ({role.team})</h3>
+            <p>{role.ability}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
