@@ -8,78 +8,117 @@
   <body>
     <div class="container">
       <div class="form-group">
-        <label for="jsonInput">Paste your character list:</label>
+        <label for="characterInput">Paste your character list:</label>
         <textarea 
-          id="jsonInput" 
-          placeholder='Paste your JSON configuration here...'
+          id="characterInput"
+          placeholder='Paste comma-separated character names like: "noble","librarian","pixie","empath"'
         ></textarea>
         <div id="validationStatus" class="validation-status"></div>
         
         <div class="example">
           <strong>Example format:</strong>
-          <pre>
-            "noble","librarian","pixie","empath","villageidiot","gossip","alsaahir"
-          </pre>
+          <pre>"noble","librarian","pixie","empath","villageidiot","gossip","alsaahir"</pre>
         </div>
       </div>
       
-      <button id="saveBtn" disabled>Save Configuration</button>
+      <button id="saveBtn" onclick="handleSave()">Save Configuration</button>
+      <button type="button" onclick="testValidation()" style="margin-top: 10px; background: #6c757d;">Test Validation</button>
     </div>
 
     <script>
+      console.log('Config page loading...');
+      
       let authToken = '';
       let broadcasterId = '';
       let currentConfig = null;
 
-      const jsonInput = document.getElementById('jsonInput');
-      const validationStatus = document.getElementById('validationStatus');
-      const saveBtn = document.getElementById('saveBtn');
-
-      // Initialize Twitch extension
-      Twitch.ext.onAuthorized((auth) => {
-        authToken = auth.token;
-        broadcasterId = auth.userId;
-        
-        // Load existing configuration if available
-        loadExistingConfig();
+      // Initialize when page loads
+      window.addEventListener('load', function() {
+        console.log('Page loaded, initializing...');
+        initialize();
       });
 
-      function loadExistingConfig() {
-        const broadcasterConfig = Twitch.ext.configuration.broadcaster;
-        if (broadcasterConfig && broadcasterConfig.content) {
-          try {
-            const config = JSON.parse(broadcasterConfig.content);
-            jsonInput.value = JSON.stringify(config, null, 2);
-            validateJSON();
-          } catch (e) {
-            console.log('No valid existing config found');
-          }
+      function initialize() {
+        console.log('Checking for Twitch...');
+        
+        if (window.Twitch && window.Twitch.ext) {
+          console.log('Twitch found, setting up...');
+          window.Twitch.ext.onAuthorized((auth) => {
+            console.log('Twitch authorized:', auth);
+            authToken = auth.token;
+            broadcasterId = auth.userId;
+            loadExistingConfig();
+          });
+        } else {
+          console.log('Twitch not ready, waiting...');
+          setTimeout(initialize, 500);
         }
       }
 
-      function validateJSON() {
-        const inputValue = jsonInput.value.trim();
+      function loadExistingConfig() {
+        console.log('Loading existing config...');
+        try {
+          const broadcasterConfig = window.Twitch.ext.configuration.broadcaster;
+          if (broadcasterConfig && broadcasterConfig.content) {
+            console.log('Found existing config:', broadcasterConfig.content);
+            const config = JSON.parse(broadcasterConfig.content);
+            if (Array.isArray(config)) {
+              const formattedList = config.map(char => '"' + char + '"').join(',');
+              document.getElementById('characterInput').value = formattedList;
+              console.log('Loaded config into textarea');
+            }
+          }
+        } catch (e) {
+          console.log('Error loading config:', e);
+        }
+      }
+
+      function parseCharacterList(input) {
+        const characters = input.split(',').map(char => {
+          return char.trim().replace(/^["']|["']$/g, '');
+        }).filter(char => char.length > 0);
+        
+        return characters;
+      }
+
+      function validateCharacterList() {
+        console.log('Validating character list...');
+        const inputValue = document.getElementById('characterInput').value.trim();
         
         if (!inputValue) {
-          showValidationStatus('', 'none');
-          saveBtn.disabled = true;
-          return;
+          showValidationStatus('Please enter character names', 'error');
+          return null;
         }
 
         try {
-          const parsedJSON = JSON.parse(inputValue);
-          currentConfig = parsedJSON;
+          const characters = parseCharacterList(inputValue);
           
-          showValidationStatus('✅ Valid format', 'valid');
-          saveBtn.disabled = false;
+          if (characters.length === 0) {
+            showValidationStatus('No valid characters found', 'error');
+            return null;
+          }
+
+          // Basic validation - just check length
+          const invalidChars = characters.filter(char => char.length < 2);
+          
+          if (invalidChars.length > 0) {
+            showValidationStatus('Some character names are too short: ' + invalidChars.join(', '), 'error');
+            return null;
+          }
+
+          showValidationStatus('✅ Valid - ' + characters.length + ' characters found', 'valid');
+          return characters;
+          
         } catch (error) {
-          currentConfig = null;
-          showValidationStatus(`❌ Invalid: ${error.message}`, 'error');
-          saveBtn.disabled = true;
+          console.log('Validation error:', error);
+          showValidationStatus('Error parsing character list', 'error');
+          return null;
         }
       }
 
       function showValidationStatus(message, type) {
+        console.log('Showing validation:', message, type);
+        const validationStatus = document.getElementById('validationStatus');
         validationStatus.textContent = message;
         validationStatus.className = 'validation-status';
         
@@ -94,21 +133,33 @@
         }
       }
 
-      // Save configuration
-      saveBtn.addEventListener('click', () => {
-        if (!currentConfig) {
-          alert('Please enter valid config before saving.');
+      // Test validation button
+      function testValidation() {
+        console.log('Test button clicked');
+        const result = validateCharacterList();
+        if (result) {
+          console.log('Parsed characters:', result);
+        }
+      }
+
+      function handleSave() {
+        console.log('Save button clicked');
+        
+        const characters = validateCharacterList();
+        if (!characters) {
+          alert('Please fix the character list before saving.');
           return;
         }
 
         try {
-          Twitch.ext.configuration.set(
+          console.log('Saving to Twitch:', characters);
+          window.Twitch.ext.configuration.set(
             'broadcaster',
-            '1', // version
-            JSON.stringify(currentConfig)
+            '1',
+            JSON.stringify(characters)
           );
 
-          // Show success feedback
+          const saveBtn = document.getElementById('saveBtn');
           const originalText = saveBtn.textContent;
           saveBtn.textContent = '✅ Saved!';
           saveBtn.style.background = '#28a745';
@@ -118,10 +169,13 @@
             saveBtn.style.background = '#9147ff';
           }, 2000);
 
+          console.log('Save successful');
+
         } catch (err) {
-          alert(`Error saving configuration: ${err.message}`);
+          console.error('Save error:', err);
+          alert('Error saving: ' + err.message);
         }
-      });
+      }
     </script>
   </body>
 </html>

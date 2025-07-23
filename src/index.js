@@ -43,6 +43,8 @@ function PanelApp() {
           if (broadcasterConfig && broadcasterConfig.content) {
             try {
               setConfig(JSON.parse(broadcasterConfig.content));
+              console.log(broadcasterConfig.content);
+              console.log(config);
             } catch (e) {
               console.error("Invalid config JSON:", e);
             }
