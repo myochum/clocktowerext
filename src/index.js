@@ -12,47 +12,101 @@ const getRoleIcon = (roleId) => {
   }
 };
 
+const getRole = (character) => {
+  return roles.find(role => role.id === character);
+}
+
 function PanelApp() {
   const [config, setConfig] = useState(null);
+  const [twitchReady, setTwitchReady] = useState(false);
+  const [characterList, setCharacterList] = useState([]);
 
+  //replace with config when not testing
   useEffect(() => {
-    window.Twitch.ext.onAuthorized(() => {
-      const broadcasterConfig = window.Twitch.ext.configuration.broadcaster;
-
-      if (broadcasterConfig && broadcasterConfig.content) {
-        try {
-          setConfig(JSON.parse(broadcasterConfig.content));
-        } catch (e) {
-          console.error("Invalid config JSON:", e);
-        }
-      }
-    });
+    fetch('./characters.txt')
+      .then(response => response.text())
+      .then(text => {
+        const characterList = text.trim().split(',').map(c => c.replaceAll("\"", ''));
+        setCharacterList(characterList);
+      });
   }, []);
 
-  // if (!config) return <div>Loading config...</div>;
+  useEffect(() => {
+    // Function to initialize Twitch extension
+    const initTwitch = () => {
+      if (window.Twitch && window.Twitch.ext) {
+        setTwitchReady(true);
+        window.Twitch.ext.onAuthorized((auth) => {
+          console.log('Twitch extension authorized');
+          const broadcasterConfig = window.Twitch.ext.configuration.broadcaster;
+
+          if (broadcasterConfig && broadcasterConfig.content) {
+            try {
+              setConfig(JSON.parse(broadcasterConfig.content));
+            } catch (e) {
+              console.error("Invalid config JSON:", e);
+            }
+          }
+        });
+      }
+    };
+
+    // Try to initialize immediately
+    initTwitch();
+
+    // If Twitch isn't ready, wait for it
+    if (!window.Twitch || !window.Twitch.ext) {
+      const checkTwitch = setInterval(() => {
+        if (window.Twitch && window.Twitch.ext) {
+          clearInterval(checkTwitch);
+          initTwitch();
+        }
+      }, 100);
+
+      // Cleanup interval after 10 seconds
+      setTimeout(() => {
+        clearInterval(checkTwitch);
+      }, 10000);
+
+      return () => clearInterval(checkTwitch);
+    }
+  }, []);
 
   return (
-    <div>
-      {/* <pre>{JSON.stringify(config, null, 2)}</pre> */}
+    <div className="extension-container">
       <div>
-        {roles.map(role => {
-          const iconSrc = getRoleIcon(role.id);
-          return (
-            <div key={role.id} style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc', display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
-              {iconSrc && (
-                <img 
-                  src={iconSrc} 
-                  alt={`${role.name} icon`}
-                  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }}
-                  onError={(e) => { e.target.style.display = 'none'; }}
-                />
-              )}
-              <div style={{ flex: 1 }}>
-                <h3 style={{ margin: '0 0 5px 0' }}>{role.name}</h3>
-                <p style={{ margin: 0 }}>{role.ability}</p>
+        {characterList.map(character => {
+          const role = getRole(character);
+          if (role) {
+            const iconSrc = getRoleIcon(role.id);
+            return (
+              <div key={role.id} className="role-card">
+                {iconSrc && (
+                  <img 
+                    src={iconSrc} 
+                    alt={`${role.name} icon`}
+                    className="role-icon"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                )}
+                <div className="role-info">
+                  <h3 className="role-name">
+                    {role.name}
+                    <span className="role-team">
+                      ({role.team})
+                    </span>
+                  </h3>
+                  <p className="role-ability">
+                    {role.ability}
+                  </p>
+                </div>
               </div>
-            </div>
+            );
+        } else{
+          return (
+            <div/>
           );
+        }
         })}
       </div>
     </div>

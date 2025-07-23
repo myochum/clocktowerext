@@ -1,44 +1,126 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Extension Config</title>
+    <title>Blood on the Clocktower - Extension Config</title>
     <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+    <link rel="stylesheet" href="config.css">
   </head>
   <body>
-    <h2>Upload JSON Config</h2>
-    <input type="file" id="fileInput" accept=".json" />
-    <button id="uploadBtn">Save Config</button>
+    <div class="container">
+      <div class="form-group">
+        <label for="jsonInput">Paste your character list:</label>
+        <textarea 
+          id="jsonInput" 
+          placeholder='Paste your JSON configuration here...'
+        ></textarea>
+        <div id="validationStatus" class="validation-status"></div>
+        
+        <div class="example">
+          <strong>Example format:</strong>
+          <pre>
+            "noble","librarian","pixie","empath","villageidiot","gossip","alsaahir"
+          </pre>
+        </div>
+      </div>
+      
+      <button id="saveBtn" disabled>Save Configuration</button>
+    </div>
 
     <script>
       let authToken = '';
       let broadcasterId = '';
+      let currentConfig = null;
 
+      const jsonInput = document.getElementById('jsonInput');
+      const validationStatus = document.getElementById('validationStatus');
+      const saveBtn = document.getElementById('saveBtn');
+
+      // Initialize Twitch extension
       Twitch.ext.onAuthorized((auth) => {
         authToken = auth.token;
         broadcasterId = auth.userId;
+        
+        // Load existing configuration if available
+        loadExistingConfig();
       });
 
-      document.getElementById('uploadBtn').addEventListener('click', () => {
-        const file = document.getElementById('fileInput').files[0];
-        if (!file) return alert("Please select a file");
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
+      function loadExistingConfig() {
+        const broadcasterConfig = Twitch.ext.configuration.broadcaster;
+        if (broadcasterConfig && broadcasterConfig.content) {
           try {
-            const jsonData = JSON.parse(e.target.result);
-
-            Twitch.ext.configuration.set(
-              'broadcaster',
-              '1', // version
-              JSON.stringify(jsonData)
-            );
-
-            alert('Configuration saved!');
-          } catch (err) {
-            alert('Invalid JSON');
+            const config = JSON.parse(broadcasterConfig.content);
+            jsonInput.value = JSON.stringify(config, null, 2);
+            validateJSON();
+          } catch (e) {
+            console.log('No valid existing config found');
           }
-        };
-        reader.readAsText(file);
+        }
+      }
+
+      function validateJSON() {
+        const inputValue = jsonInput.value.trim();
+        
+        if (!inputValue) {
+          showValidationStatus('', 'none');
+          saveBtn.disabled = true;
+          return;
+        }
+
+        try {
+          const parsedJSON = JSON.parse(inputValue);
+          currentConfig = parsedJSON;
+          
+          showValidationStatus('✅ Valid format', 'valid');
+          saveBtn.disabled = false;
+        } catch (error) {
+          currentConfig = null;
+          showValidationStatus(`❌ Invalid: ${error.message}`, 'error');
+          saveBtn.disabled = true;
+        }
+      }
+
+      function showValidationStatus(message, type) {
+        validationStatus.textContent = message;
+        validationStatus.className = 'validation-status';
+        
+        if (type === 'valid') {
+          validationStatus.classList.add('validation-valid');
+          validationStatus.style.display = 'block';
+        } else if (type === 'error') {
+          validationStatus.classList.add('validation-error');
+          validationStatus.style.display = 'block';
+        } else {
+          validationStatus.style.display = 'none';
+        }
+      }
+
+      // Save configuration
+      saveBtn.addEventListener('click', () => {
+        if (!currentConfig) {
+          alert('Please enter valid config before saving.');
+          return;
+        }
+
+        try {
+          Twitch.ext.configuration.set(
+            'broadcaster',
+            '1', // version
+            JSON.stringify(currentConfig)
+          );
+
+          // Show success feedback
+          const originalText = saveBtn.textContent;
+          saveBtn.textContent = '✅ Saved!';
+          saveBtn.style.background = '#28a745';
+          
+          setTimeout(() => {
+            saveBtn.textContent = originalText;
+            saveBtn.style.background = '#9147ff';
+          }, 2000);
+
+        } catch (err) {
+          alert(`Error saving configuration: ${err.message}`);
+        }
       });
     </script>
   </body>

@@ -11,3 +11,59 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Main container for the extension */
+.extension-container {
+  padding: 10px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Individual role card */
+.role-card {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background-color: #f9f9f9;
+}
+
+/* Role icon image */
+.role-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+}
+
+/* Role information container */
+.role-info {
+  flex: 1;
+}
+
+/* Role name heading */
+.role-name {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Role team span */
+.role-team {
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+  text-transform: capitalize;
+}
+
+/* Role ability description */
+.role-ability {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #555;
+}
