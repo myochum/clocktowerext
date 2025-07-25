@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './config.css';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
+  const [validationStatus, setValidationStatus] = useState(''); // 'valid', 'error', or ''
   const [twitchReady, setTwitchReady] = useState(false);
 
   useEffect(() => {
@@ -36,12 +37,60 @@ function ConfigApp() {
     }
   }, []);
 
+
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleSave = () => {
-    alert('Save clicked - input: ' + inputValue);
+    console.log('Save button clicked');
+    
+    // Basic validation
+    if (!inputValue.trim()) {
+      setValidationMessage('❌ Please enter character names before saving');
+      setValidationStatus('error');
+      return;
+    }
+
+    if (!twitchReady) {
+      setValidationMessage('❌ Twitch extension not ready. Please wait and try again.');
+      setValidationStatus('error');
+      return;
+    }
+
+    try {
+      // Parse the character list
+      const characters = inputValue.split(',').map(char => {
+        return char.trim().replace(/^["']|["']$/g, '');
+      }).filter(char => char.length > 0);
+
+      if (characters.length === 0) {
+        setValidationMessage('❌ No valid characters found to save');
+        setValidationStatus('error');
+        return;
+      }
+
+      console.log('Saving to Twitch:', characters);
+      
+      // Save to Twitch
+      window.Twitch.ext.configuration.set(
+        'broadcaster',
+        '1',
+        JSON.stringify(characters)
+      );
+
+      // Show success message
+      setValidationMessage(`✅ Configuration saved successfully! (${characters.length} characters)`);
+      setValidationStatus('valid');
+
+      console.log('Save successful');
+
+    } catch (err) {
+      console.error('Save error:', err);
+      setValidationMessage('❌ Error saving configuration: ' + err.message);
+      setValidationStatus('error');
+    }
   };
 
   const handleTestValidation = () => {
@@ -51,11 +100,11 @@ function ConfigApp() {
 
   return (
     <div className="extension-container">
-      <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
+      <div className="config-container">
         <h2>Blood on the Clocktower - Config</h2>
         
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="characterInput" style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+        <div className="config-form-group">
+          <label htmlFor="characterInput" className="config-label">
             Paste your character list:
           </label>
           <textarea 
@@ -63,79 +112,41 @@ function ConfigApp() {
             value={inputValue}
             onChange={handleInputChange}
             placeholder='Paste comma-separated character names like: "noble","librarian","pixie","empath"'
-            style={{ 
-              width: '100%', 
-              minHeight: '120px', 
-              padding: '12px', 
-              border: '2px solid #e0e0e0', 
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontFamily: '"Courier New", monospace'
-            }}
+            className="config-textarea"
           />
           
           {validationMessage && (
-            <div style={{ 
-              marginTop: '10px', 
-              padding: '8px 12px', 
-              borderRadius: '4px', 
-              backgroundColor: '#d4edda', 
-              color: '#155724' 
-            }}>
+            <div className={`config-validation-message ${validationStatus}`}>
               {validationMessage}
             </div>
           )}
           
-          <div style={{ 
-            marginTop: '15px', 
-            padding: '15px', 
-            backgroundColor: '#f8f9fa', 
-            borderRadius: '6px',
-            borderLeft: '4px solid #9147ff'
-          }}>
+          <div className="config-example-box">
             <strong>Example format:</strong>
-            <pre style={{ margin: '10px 0 0 0', fontSize: '12px' }}>
+            <pre className="config-example">
               "noble","librarian","pixie","empath","villageidiot","gossip","alsaahir"
             </pre>
           </div>
         </div>
         
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div className="config-buttons">
           <button 
             onClick={handleSave}
-            style={{ 
-              padding: '12px 24px', 
-              background: '#9147ff', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
+            className="config-save-btn"
           >
             Save Configuration
           </button>
           
           <button 
             onClick={handleTestValidation}
-            style={{ 
-              padding: '12px 24px', 
-              background: '#6c757d', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
+            className="config-test-btn"
             type="button"
           >
             Test Validation
           </button>
         </div>
 
-        <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+        <div className="config-footer">
           <div>Twitch Ready: {twitchReady ? '✅' : '❌'}</div>
           <div>Input Length: {inputValue.length}</div>
         </div>
