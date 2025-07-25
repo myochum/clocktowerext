@@ -1,0 +1,51 @@
+/* Config page specific styles */
+.config-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.config-form-group {
+  margin-bottom: 20px;
+}
+
+.config-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.config-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.config-save-btn,
+.config-test-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.config-save-btn {
+  background: #9147ff;
+  color: white;
+}
+
+.config-test-btn {
+  background: #6c757d;
+  color: white;
+} 

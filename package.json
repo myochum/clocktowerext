@@ -2,40 +2,22 @@
   "name": "clocktowerext",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "type": "module",
   "dependencies": {
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
-    "@testing-library/user-event": "^13.2.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.0"
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.0"
   },
   "scripts": {
-    "start": "HTTPS=true PORT=8080 react-scripts start",
-    "build": "react-scripts build",
-    "postinstall": "sh install_cert.sh",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "config": "vite --open /config.html",
+    "start": "vite",
+    "gen-certs": "sh install_cert.sh",
+    "postinstall": "sh install_cert.sh"
   }
 }

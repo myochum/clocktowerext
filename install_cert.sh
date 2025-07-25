@@ -3,5 +3,8 @@ mkcert -install \
     -cert-file localhost.pem \
     -key-file localhost-key.pem \
     localhost
-cat localhost.pem localhost-key.pem > node_modules/webpack-dev-server/ssl/server.pem
-rm localhost.pem localhost-key.pem
+
+# Keep certificates for Vite (don't copy to webpack or delete)
+echo "✅ Certificates ready for Vite at:"
+echo "   📄 localhost.pem"
+echo "   🔑 localhost-key.pem"
