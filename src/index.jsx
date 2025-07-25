@@ -20,21 +20,12 @@ const getRole = (character) => {
 function PanelApp() {
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
-  const [characterList, setCharacterList] = useState([]);
-
-  //replace with config when not testing
-  useEffect(() => {
-    fetch('./characters.txt')
-      .then(response => response.text())
-      .then(text => {
-        const characterList = text.trim().split(',').map(c => c.replaceAll("\"", ''));
-        setCharacterList(characterList);
-      });
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Function to initialize Twitch extension
     const initTwitch = () => {
+      
       if (window.Twitch && window.Twitch.ext) {
         setTwitchReady(true);
         window.Twitch.ext.onAuthorized((auth) => {
@@ -50,6 +41,8 @@ function PanelApp() {
               console.error("Invalid config JSON:", e);
             }
           }
+          // Set loading to false after checking for config
+          setLoading(false);
         });
       }
     };
@@ -69,51 +62,68 @@ function PanelApp() {
       // Cleanup interval after 10 seconds
       setTimeout(() => {
         clearInterval(checkTwitch);
+        setLoading(false); // Stop loading if Twitch never loads
       }, 10000);
 
       return () => clearInterval(checkTwitch);
     }
   }, []);
 
-  return (
-    <div className="extension-container">
-      <div>
-        {characterList.map((character, index) => {
-          const role = getRole(character);
-          if (role) {
-            const iconSrc = getRoleIcon(role.id);
-            return (
-              <div key={role.id} className="role-card">
-                {iconSrc && (
-                  <img 
-                    src={iconSrc} 
-                    alt={`${role.name} icon`}
-                    className="role-icon"
-                    onError={(e) => { e.target.style.display = 'none'; }}
-                  />
-                )}
-                <div className="role-info">
-                  <h3 className="role-name">
-                    {role.name}
-                    <span className="role-team">
-                      ({role.team})
-                    </span>
-                  </h3>
-                  <p className="role-ability">
-                    {role.ability}
-                  </p>
-                </div>
-              </div>
-            );
-        } else{
-          return (
-            <div key={`unknown-${index}`}/>
-          );
-        }
-        })}
+  if (loading) {
+    return (
+      <div className="extension-container">
+        <div className="loading-message">Loading...</div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (config) {
+    return (
+      <div className="extension-container">
+        <div>
+          {config.map((character, index) => {
+            const role = getRole(character);
+            if (role) {
+              const iconSrc = getRoleIcon(role.id);
+              return (
+                <div key={role.id} className="role-card">
+                  {iconSrc && (
+                    <img 
+                      src={iconSrc} 
+                      alt={`${role.name} icon`}
+                      className="role-icon"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  )}
+                  <div className="role-info">
+                    <h3 className="role-name">
+                      {role.name}
+                      <span className="role-team">
+                        ({role.team})
+                      </span>
+                    </h3>
+                    <p className="role-ability">
+                      {role.ability}
+                    </p>
+                  </div>
+                </div>
+              );
+          } else{
+            return (
+              <div key={`unknown-${index}`}/>
+            );
+          }
+          })}
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="extension-container">
+        <div className="empty-message">No character configuration found. Please set up your character list in the extension configuration.</div>
+      </div>
+    );
+  }
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
