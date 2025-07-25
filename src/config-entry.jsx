@@ -93,16 +93,9 @@ function ConfigApp() {
     }
   };
 
-  const handleTestValidation = () => {
-    console.log('Test validation clicked');
-    console.log('Input value:', inputValue);
-  };
-
   return (
     <div className="extension-container">
       <div className="config-container">
-        <h2>Blood on the Clocktower - Config</h2>
-        
         <div className="config-form-group">
           <label htmlFor="characterInput" className="config-label">
             Paste your character list:
@@ -111,7 +104,6 @@ function ConfigApp() {
             id="characterInput"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder='Paste comma-separated character names like: "noble","librarian","pixie","empath"'
             className="config-textarea"
           />
           
@@ -124,7 +116,7 @@ function ConfigApp() {
           <div className="config-example-box">
             <strong>Example format:</strong>
             <pre className="config-example">
-              "noble","librarian","pixie","empath","villageidiot","gossip","alsaahir"
+              "noble","librarian","pixie","empath"
             </pre>
           </div>
         </div>
@@ -136,19 +128,6 @@ function ConfigApp() {
           >
             Save Configuration
           </button>
-          
-          <button 
-            onClick={handleTestValidation}
-            className="config-test-btn"
-            type="button"
-          >
-            Test Validation
-          </button>
-        </div>
-
-        <div className="config-footer">
-          <div>Twitch Ready: {twitchReady ? '✅' : '❌'}</div>
-          <div>Input Length: {inputValue.length}</div>
         </div>
       </div>
     </div>

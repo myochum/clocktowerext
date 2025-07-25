@@ -59,17 +59,13 @@
   flex-wrap: wrap;
 }
 
-.config-save-btn,
-.config-test-btn {
+.config-save-btn {
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-}
-
-.config-save-btn {
   background: #9147ff;
   color: white;
 }
@@ -78,29 +74,10 @@
   background: #7c3aed;
 }
 
-.config-test-btn {
-  background: #6c757d;
-  color: white;
-}
-
-.config-test-btn:hover {
-  background: #5a6268;
-}
-
-.config-footer {
-  margin-top: 20px;
-  font-size: 12px;
-  color: #666;
-}
-
 .config-example-box {
   margin-top: 15px;
   padding: 15px;
   background-color: #f8f9fa;
   border-radius: 6px;
   border-left: 4px solid #9147ff;
-}
-
-.extension-container {
-  /* Root container for config extension */
 }
