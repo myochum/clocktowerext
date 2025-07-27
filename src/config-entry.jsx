@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './config.css';
+import roles from './assets/roles.json';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
-  const [validationStatus, setValidationStatus] = useState(''); // 'valid', 'error', or ''
+  const [validationStatus, setValidationStatus] = useState('');
   const [twitchReady, setTwitchReady] = useState(false);
 
   useEffect(() => {
-    // Function to initialize Twitch extension
     const initTwitch = () => {
       if (window.Twitch && window.Twitch.ext) {
         setTwitchReady(true);
         window.Twitch.ext.onAuthorized((auth) => {
-          console.log('Twitch extension authorized for config');
+          console.log('Twitch extension authorized');
         });
       }
     };
@@ -48,7 +48,7 @@ function ConfigApp() {
     
     // Basic validation
     if (!inputValue.trim()) {
-      setValidationMessage('❌ Please enter character names before saving');
+      setValidationMessage('❌ Please enter script before saving');
       setValidationStatus('error');
       return;
     }
@@ -60,13 +60,29 @@ function ConfigApp() {
     }
 
     try {
-      // Parse the character list
-      const characters = inputValue.split(',').map(char => {
-        return char.trim().replace(/^["']|["']$/g, '');
-      }).filter(char => char.length > 0);
+      // Parse the JSON script
+      const scriptData = JSON.parse(inputValue);
+      
+      if (!Array.isArray(scriptData)) {
+        setValidationMessage('❌ Script must be a JSON array');
+        setValidationStatus('error');
+        return;
+      }
+
+      // Extract character IDs (skip _meta objects)
+      const characters = scriptData
+        .filter(item => item.id && item.id !== '_meta')
+        .map(item => item.id);
 
       if (characters.length === 0) {
-        setValidationMessage('❌ No valid characters found to save');
+        setValidationMessage('❌ No valid characters found in script');
+        setValidationStatus('error');
+        return;
+      }
+
+      const invalidCharacters = characters.filter(item => roles.find(role => role.id === item) === undefined);
+      if (invalidCharacters.length > 0) {
+        setValidationMessage('❌ Invalid character found in script: ' + invalidCharacters.join(', '));
         setValidationStatus('error');
         return;
       }
@@ -88,7 +104,11 @@ function ConfigApp() {
 
     } catch (err) {
       console.error('Save error:', err);
-      setValidationMessage('❌ Error saving configuration: ' + err.message);
+      if (err instanceof SyntaxError) {
+        setValidationMessage('❌ Invalid JSON format. Please check your script syntax.');
+      } else {
+        setValidationMessage('❌ Error saving configuration: ' + err.message);
+      }
       setValidationStatus('error');
     }
   };
@@ -98,7 +118,7 @@ function ConfigApp() {
       <div className="config-container">
         <div className="config-form-group">
           <label htmlFor="characterInput" className="config-label">
-            Paste your character list:
+            Paste your game script:
           </label>
           <textarea 
             id="characterInput"
@@ -114,9 +134,21 @@ function ConfigApp() {
           )}
           
           <div className="config-example-box">
-            <strong>Example format:</strong>
+            <strong>Example script:</strong>
             <pre className="config-example">
-              "noble","librarian","pixie","empath"
+{`[
+  {"id": "_meta", "name": "Kill My Darlings", "author": "Ruth"},
+  {"id": "steward"}, {"id": "noble"}, {"id": "pixie"},
+  {"id": "highpriestess"}, {"id": "fortuneteller"},
+  {"id": "towncrier"}, {"id": "oracle"}, {"id": "juggler"},
+  {"id": "nightwatchman"}, {"id": "artist"}, {"id": "huntsman"},
+  {"id": "farmer"}, {"id": "cannibal"}, {"id": "butler"},
+  {"id": "sweetheart"}, {"id": "damsel"}, {"id": "drunk"},
+  {"id": "lunatic"}, {"id": "widow"}, {"id": "poisoner"},
+  {"id": "witch"}, {"id": "goblin"}, {"id": "imp"},
+  {"id": "vigormortis"}, {"id": "fanggu"}, {"id": "bureaucrat"},
+  {"id": "thief"}, {"id": "deviant"}, {"id": "harlot"}
+]`}
             </pre>
           </div>
         </div>
