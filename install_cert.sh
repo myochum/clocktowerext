@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-mkcert -install \
-    -cert-file localhost.pem \
-    -key-file localhost-key.pem \
-    localhost
+
+# Step 1: Install the local Certificate Authority
+echo "🔧 Installing mkcert Certificate Authority..."
+mkcert -install
+
+# Step 2: Generate certificates for localhost
+echo "📜 Generating certificates for localhost..."
+mkcert -cert-file localhost.pem -key-file localhost-key.pem localhost
 
 # Keep certificates for Vite (don't copy to webpack or delete)
 echo "✅ Certificates ready for Vite at:"
