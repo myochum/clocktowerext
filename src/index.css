@@ -89,3 +89,68 @@ body {
   color: #ef6c00;
   border-color: #ffcc02;
 }
+
+
+/* Mobile style overrides */
+.mobile {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    margin: 10px;
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Dark mode style overrides */
+.dark {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark .extension-container {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark .role-card {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #ffffff;
+}
+
+.dark .role-card:hover {
+    background-color: #374151;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dark .role-icon {
+    border-color: #4a5568;
+}
+
+.dark .role-name {
+    color: #f7fafc;
+}
+
+.dark .role-team {
+    color: #a0aec0;
+}
+
+.dark .role-ability {
+    color: #e2e8f0;
+}
+
+.dark .loading-message {
+    background-color: #2b6cb0;
+    color: #e6fffa;
+    border-color: #3182ce;
+}
+
+.dark .empty-message {
+    background-color: #744210;
+    color: #fef5e7;
+    border-color: #d69e2e;
+}

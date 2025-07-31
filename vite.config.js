@@ -40,7 +40,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: __dirname + '/src/index.html',
-        config: __dirname + '/src/config.html'
+        config: __dirname + '/src/config.html',
+        mobile: __dirname + '/src/mobile.html'
       }
     }
   },

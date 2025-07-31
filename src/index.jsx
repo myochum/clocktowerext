@@ -21,6 +21,11 @@ function PanelApp() {
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  // Check if this is mobile version
+  const isMobile = document.getElementById('root')?.getAttribute('data-mobile') === 'true';
+
 
   useEffect(() => {
     // Function to initialize Twitch extension
@@ -41,6 +46,12 @@ function PanelApp() {
               console.error("Invalid config JSON:", e);
             }
           }
+
+          window.Twitch.ext.onContext((context) => {
+            console.log('Twitch extension context:', context);
+            setIsDarkMode(context.theme === 'dark');
+          });
+
           // Set loading to false after checking for config
           setLoading(false);
         });
@@ -71,7 +82,7 @@ function PanelApp() {
 
   if (loading) {
     return (
-      <div className="extension-container">
+      <div className={`extension-container${isMobile ? ' mobile' : ''}`}>
         <div className="loading-message">Loading...</div>
       </div>
     );
@@ -79,7 +90,7 @@ function PanelApp() {
 
   if (config) {
     return (
-      <div className="extension-container">
+      <div className={`extension-container${isMobile ? ' mobile' : ''}${isDarkMode ? ' dark' : ''}`}>
         <div>
           {config.map((character, index) => {
             const role = getRole(character);
@@ -119,7 +130,7 @@ function PanelApp() {
     );
   } else {
     return (
-      <div className="extension-container">
+      <div className={`extension-container${isMobile ? ' mobile' : ''}`}>
         <div className="empty-message">No character configuration found. Please set up your character list in the extension configuration.</div>
       </div>
     );

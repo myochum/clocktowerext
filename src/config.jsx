@@ -8,6 +8,7 @@ function ConfigApp() {
   const [validationMessage, setValidationMessage] = useState('');
   const [validationStatus, setValidationStatus] = useState('');
   const [twitchReady, setTwitchReady] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const initTwitch = () => {
@@ -15,6 +16,11 @@ function ConfigApp() {
         setTwitchReady(true);
         window.Twitch.ext.onAuthorized((auth) => {
           console.log('Twitch extension authorized');
+        });
+
+        window.Twitch.ext.onContext((context) => {
+          console.log('Twitch extension context:', context);
+          setIsDarkMode(context.theme === 'dark');
         });
       }
     };
@@ -114,7 +120,7 @@ function ConfigApp() {
   };
 
   return (
-    <div className="extension-container">
+    <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
         <div className="config-form-group">
           <label htmlFor="characterInput" className="config-label">

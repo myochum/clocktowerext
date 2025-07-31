@@ -110,3 +110,67 @@
   border-left: 4px solid #9147ff;
   overflow: hidden;
 }
+
+/* Dark mode style overrides */
+.dark {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark .config-container {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark .config-label {
+  color: #f7fafc;
+}
+
+.dark .config-textarea {
+  background-color: #2d3748;
+  border-color: #4a5568;
+  color: #ffffff;
+}
+
+.dark .config-textarea::placeholder {
+  color: #a0aec0;
+}
+
+.dark .config-textarea:focus {
+  border-color: #9147ff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(145, 71, 255, 0.3);
+}
+
+.dark .config-validation-message.valid {
+  background-color: #22543d;
+  color: #c6f6d5;
+  border-color: #38a169;
+}
+
+.dark .config-validation-message.error {
+  background-color: #742a2a;
+  color: #fed7d7;
+  border-color: #e53e3e;
+}
+
+.dark .config-example {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  border-color: #4a5568;
+}
+
+.dark .config-save-btn {
+  background: #9147ff;
+  color: white;
+}
+
+.dark .config-save-btn:hover {
+  background: #7c3aed;
+}
+
+.dark .config-example-box {
+  background-color: #2d3748;
+  border-left-color: #9147ff;
+  color: #e2e8f0;
+}
