@@ -4,12 +4,12 @@ import './index.css';
 import roles from './assets/roles.json';
 
 // Helper function to get role icon - Vite compatible
-const getRoleIcon = (roleId) => {
+const getRoleIcon = (role) => {
   try {
     // Use dynamic import for Vite
-    return new URL(`./assets/icons/${roleId}.png`, import.meta.url).href;
+    return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
   } catch (error) {
-    return null; // Return null if icon doesn't exist
+    return new URL(`./assets/icons/${role.team}.png`, import.meta.url).href;
   }
 };
 
@@ -95,7 +95,7 @@ function PanelApp() {
           {config.map((character, index) => {
             const role = getRole(character);
             if (role) {
-              const iconSrc = getRoleIcon(role.id);
+              const iconSrc = getRoleIcon(role);
               return (
                 <div key={role.id} className="role-card">
                   {iconSrc && (
