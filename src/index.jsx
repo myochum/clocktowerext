@@ -104,7 +104,7 @@ function PanelApp() {
             
             return (
               <div key={teamKey} className="team-section">
-                <h3 className="team-header">{teamName}</h3>
+                <h3 className="team-header">{teamName}{teamName === 'Fabled' || teamName === 'Townsfolk' ? '' : 's'}</h3>
                 <div className="team-roles">
                   {teamRoles.map((character, index) => {
                     const role = getRole(character);
