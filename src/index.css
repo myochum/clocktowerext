@@ -14,27 +14,47 @@ body {
   padding: 10px;
   max-height: 100vh;
   overflow-y: auto;
+  max-width: 35%;
+  float: right;
+  background-color: rgba(248, 248, 248, 0.4);
+}
+
+/* Meta information */
+.script-header {
+    padding: 0 10px;
+}
+
+.script-name {
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* Header information */
+.team-header {
+    font-weight: 600;
+    padding: 0 10px;
+    margin-bottom: 6px;
+}
+
+.script-author {
+    margin: 0;
 }
 
 /* Individual role card */
 .role-card {
   margin: 10px 0;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 15px;
-  background-color: #f9f9f9;
+  margin: 0;
 }
 
 /* Role icon image */
 .role-icon {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   object-fit: cover;
-  border-radius: 5px;
-  border: 2px solid #ddd;
 }
 
 /* Role information container */
@@ -47,6 +67,7 @@ body {
   margin: 0 0 5px 0;
   color: #333;
   font-size: 16px;
+  font-weight: 500;
 }
 
 /* Role team span */
@@ -90,6 +111,26 @@ body {
   border-color: #ffcc02;
 }
 
+/* Small screen overrides */
+@media only screen and (max-width: 600px) {
+  .script-name {
+    font-size: 1.2em;
+  }
+
+  .script-author {
+    font-size: 0.9em;
+  }
+
+  .team-header {
+    font-size: 1em;
+  }
+
+  .role-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
 
 /* Mobile style overrides */
 .mobile {
@@ -97,7 +138,6 @@ body {
     align-items: center;
     gap: 10px;
     padding: 10px;
-    border-radius: 10px;
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     margin: 10px;
@@ -107,18 +147,15 @@ body {
 
 /* Dark mode style overrides */
 .dark {
-    background-color: #1a1a1a;
+    background-color: #34323b;
     color: #ffffff;
 }
 
 .dark .extension-container {
-    background-color: #1a1a1a;
     color: #ffffff;
 }
 
 .dark .role-card {
-    background-color: #2d3748;
-    border-color: #4a5568;
     color: #ffffff;
 }
 
@@ -129,6 +166,8 @@ body {
 
 .dark .role-icon {
     border-color: #4a5568;
+    background-color: #FFFFFF;
+    border-radius: 5%;
 }
 
 .dark .role-name {

@@ -164,17 +164,15 @@ function ConfigApp() {
             <strong>Example script:</strong>
             <pre className="config-example">
 {`[
-  {"id": "_meta", "name": "Kill My Darlings", "author": "Ruth"},
-  {"id": "steward"}, {"id": "noble"}, {"id": "pixie"},
-  {"id": "highpriestess"}, {"id": "fortuneteller"},
-  {"id": "towncrier"}, {"id": "oracle"}, {"id": "juggler"},
-  {"id": "nightwatchman"}, {"id": "artist"}, {"id": "huntsman"},
-  {"id": "farmer"}, {"id": "cannibal"}, {"id": "butler"},
-  {"id": "sweetheart"}, {"id": "damsel"}, {"id": "drunk"},
-  {"id": "lunatic"}, {"id": "widow"}, {"id": "poisoner"},
-  {"id": "witch"}, {"id": "goblin"}, {"id": "imp"},
-  {"id": "vigormortis"}, {"id": "fanggu"}, {"id": "bureaucrat"},
-  {"id": "thief"}, {"id": "deviant"}, {"id": "harlot"}
+  {"id": "_meta", "name": "Trouble Brewing", "author": "The Pandemonium Institute"},
+  {"id": "washerwoman"}, {"id": "librarian"}, {"id": "investigator"},
+  {"id": "chef"}, {"id": "empath"},
+  {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"},
+  {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"},
+  {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"},
+  {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"},
+  {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"},
+  {"id": "baron"}, {"id": "imp"}
 ]`}
             </pre>
           </div>
