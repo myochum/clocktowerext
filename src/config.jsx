@@ -45,6 +45,17 @@ function ConfigApp() {
 
 
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setInputValue(event.target.result);
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -144,14 +155,26 @@ function ConfigApp() {
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
         <div className="config-form-group">
-          <label htmlFor="characterInput" className="config-label">
-            Paste your game script:
+          <label htmlFor="fileInput" className="config-label">
+            Upload your game script:
+          </label>
+          <input 
+            type="file"
+            id="fileInput"
+            accept=".json,.txt"
+            onChange={handleFileUpload}
+            className="config-file-input"
+          />
+          
+          <label htmlFor="characterInput" className="config-label" style={{marginTop: '20px'}}>
+            Or paste your game script:
           </label>
           <textarea 
             id="characterInput"
             value={inputValue}
             onChange={handleInputChange}
             className="config-textarea"
+            placeholder="Paste your JSON script here..."
           />
           
           {validationMessage && (
