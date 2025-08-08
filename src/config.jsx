@@ -93,13 +93,34 @@ function ConfigApp() {
         return;
       }
 
-      console.log('Saving to Twitch:', characters);
+      // Transform to test_config format (categorized by team)
+      const configFormated = {
+        name: scriptData.find(item => item.id === '_meta')?.name || "",
+        author: scriptData.find(item => item.id === '_meta')?.author || "",
+        roles: {
+          townsfolk: [],
+          outsider: [],
+          minion: [],
+          demon: [],
+          traveller: [],
+          fabled: []
+        }
+      };
+
+      // Categorize characters by team
+      characters.forEach(characterId => {
+        const role = roles.find(r => r.id === characterId);
+        if (role && configFormated.roles[role.team]) {
+          configFormated.roles[role.team].push(characterId);
+        }
+      });
+      console.log('Config format:', configFormated);
       
       // Save to Twitch
       window.Twitch.ext.configuration.set(
         'broadcaster',
         '1',
-        JSON.stringify(characters)
+        JSON.stringify(configFormated)
       );
 
       // Show success message

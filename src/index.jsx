@@ -5,14 +5,12 @@ import roles from './assets/roles.json';
 
 const TEST_MODE = true;
 
-// Helper function to get role icon - Vite compatible
 const getRoleIcon = (role) => {
-  try {
-    // Use dynamic import for Vite
-    return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
-  } catch (error) {
-    return new URL(`./assets/icons/${role.team}.png`, import.meta.url).href;
-  }
+  return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
+};
+
+const getTeamIcon = (role) => {
+  return new URL(`./assets/icons/${role.team}.png`, import.meta.url).href;
 };
 
 const getRole = (character) => {
@@ -36,11 +34,8 @@ function PanelApp() {
         .then(response => response.text())
         .then(text => {
           try {
-            const scriptData = JSON.parse(text);
-            const characters = scriptData
-              .filter(item => item.id && item.id !== '_meta')
-              .map(item => item.id);
-            setConfig(characters);
+            const configData = JSON.parse(text);
+            setConfig(configData);
             setLoading(false);
           } catch (e) {
             console.error("Error parsing test config:", e);
@@ -112,42 +107,56 @@ function PanelApp() {
     );
   }
 
-  if (config) {
+    if (config) {
     return (
       <div className={`extension-container${isMobile ? ' mobile' : ''}${isDarkMode ? ' dark' : ''}`}>
         <div>
-          {config.map((character, index) => {
-            const role = getRole(character);
-            if (role) {
-              const iconSrc = getRoleIcon(role);
-              return (
-                <div key={role.id} className="role-card">
-                  {iconSrc && (
-                    <img 
-                      src={iconSrc} 
-                      alt={`${role.name} icon`}
-                      className="role-icon"
-                      onError={(e) => { e.target.style.display = 'none'; }}
-                    />
-                  )}
-                  <div className="role-info">
-                    <h3 className="role-name">
-                      {role.name}
-                      <span className="role-team">
-                        ({role.team})
-                      </span>
-                    </h3>
-                    <p className="role-ability">
-                      {role.ability}
-                    </p>
-                  </div>
-                </div>
-              );
-          } else{
+          {config.name && (
+            <div className="script-header">
+              <h2 className="script-name">{config.name}</h2>
+              {config.author && <p className="script-author">by {config.author}</p>}
+            </div>
+          )}
+          
+          {Object.entries(config.roles).map(([teamKey, teamRoles]) => {
+            if (!teamRoles || teamRoles.length === 0) return null;
+            
+            // Capitalize first letter of team name
+            const teamName = teamKey.charAt(0).toUpperCase() + teamKey.slice(1);
+            
             return (
-              <div key={`unknown-${index}`}/>
+              <div key={teamKey} className="team-section">
+                <h3 className="team-header">{teamName}</h3>
+                <div className="team-roles">
+                  {teamRoles.map((character, index) => {
+                    const role = getRole(character);
+                    if (role) {
+                      const iconSrc = getRoleIcon(role);
+                      return (
+                        <div key={role.id} className="role-card">
+                          {iconSrc && (
+                            <img 
+                              src={iconSrc} 
+                              alt={`${role.name} icon`}
+                              className="role-icon"
+                              onError={(e) => { 
+                                e.target.src = getTeamIcon(role);
+                              }}
+                            />
+                          )}
+                          <div className="role-info">
+                            <h4 className="role-name">{role.name}</h4>
+                            <p className="role-ability">{role.ability}</p>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return <div key={`unknown-${teamKey}-${index}`}/>;
+                    }
+                  })}
+                </div>
+              </div>
             );
-          }
           })}
         </div>
       </div>
