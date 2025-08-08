@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import roles from './assets/roles.json';
 
-const TEST_MODE = true;
-
 const getRoleIcon = (role) => {
   return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
 };
@@ -28,25 +26,6 @@ function PanelApp() {
 
 
   useEffect(() => {
-    if (TEST_MODE) {
-      // ========== TEST MODE: Load test config ==========
-      fetch('./test_config.txt')
-        .then(response => response.text())
-        .then(text => {
-          try {
-            const configData = JSON.parse(text);
-            setConfig(configData);
-            setLoading(false);
-          } catch (e) {
-            console.error("Error parsing test config:", e);
-            setLoading(false);
-          }
-        })
-        .catch(err => {
-          console.error("Error loading test config:", err);
-          setLoading(false);
-        });
-    } else {
       // ========== TWITCH MODE: Initialize Twitch extension ==========
       const initTwitch = () => {
         if (window.Twitch && window.Twitch.ext) {
@@ -96,7 +75,6 @@ function PanelApp() {
 
         return () => clearInterval(checkTwitch);
       }
-    }
   }, []);
 
   if (loading) {
