@@ -103,7 +103,7 @@ function PanelApp() {
     if (config) {
     return (
       <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
-        <div>
+        <div className="container-content">
           {config.name && (
             <div className="script-header">
               <h2 className="script-name">{config.name}</h2>
