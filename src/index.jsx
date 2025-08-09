@@ -23,7 +23,7 @@ function PanelApp() {
   
   // Check if this is mobile version
   const isMobile = document.getElementById('root')?.getAttribute('data-mobile') === 'true';
-
+  const isVideo = document.getElementById('root')?.getAttribute('data-video') === 'true';
 
   useEffect(() => {
       // ========== TWITCH MODE: Initialize Twitch extension ==========
@@ -94,7 +94,7 @@ function PanelApp() {
 
   if (loading) {
     return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}`}>
+      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}`}>
         <div className="loading-message">Loading...</div>
       </div>
     );
@@ -102,7 +102,7 @@ function PanelApp() {
 
     if (config) {
     return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}${isDarkMode ? ' dark' : ''}`}>
+      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
         <div>
           {config.name && (
             <div className="script-header">
@@ -156,7 +156,7 @@ function PanelApp() {
     );
   } else {
     return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}`}>
+      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}`}>
         <div className="empty-message">No character configuration found. Please set up your character list in the extension configuration.</div>
       </div>
     );
