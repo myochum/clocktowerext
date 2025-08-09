@@ -1,8 +1,39 @@
+:root {
+  --font-primary: "Crimson Text", Georgia, serif;
+  --font-body: "Open Sans", 'Helvetica Neue', sans-serif;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-brand-purple: #2D122F;
+  --color-brand-dark-purple: #220824;
+  --color-brand-tan: #F2D8C6;
+  --text-on-light: #333333;
+  --text-on-dark: #F2F2F2;
+  --font-size-header: 48px;
+  --font-size-body-one: 24px;
+  --font-size-body-two: 20px;
+  --font-size-caption: 16px;
+  --space-1x: 4px;
+  --space-2x: 8px;
+  --space-3x: 12px;
+  --space-4x: 16px;
+  --space-5x: 24px;
+  --space-6x: 32px;
+  --space-7x: 48px;
+  --space-8x: 56px;
+  --space-9x: 64px;
+  --space-10x: 128px;
+  --border-radius-default: 8px;
+  --border-radius-large: 20px;
+}
+
+
+html {
+  background: rgb(0 0 0 / 0.35);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var( --font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,47 +41,95 @@ body {
 
 
 /* Main container for the extension */
-.extension-container {
-  padding: 10px;
-  max-height: 100vh;
-  overflow-y: auto;
-  background-color: rgba(248, 248, 248, 0.4);
+#root {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-.extensions-video-overlay-size-container .extension-container {
-  max-width: 35%;
-  float: right;
+.extension-container {
+  grid-area: 1 / 2 / 2 / 3;
+  padding: var(--space-6x);
+  margin: var(--space-6x);
+  height: calc(100vh - 132px);
+  background-color: var(--color-brand-purple);
+  border-radius: var(--border-radius-default);
+  border: 2px solid var(--color-brand-tan);
+  overflow: hidden;
+}
+
+/* .extensions-video-overlay-size-container .extension-container {
+max-width: 35%;
+float: right;
+} */
+
+.container-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+  box-sizing: content-box; /* So the width will be 100% + 17px */
 }
 
 /* Meta information */
 .script-header {
-    padding: 0 10px;
 }
 
 .script-name {
-    font-weight: 500;
-    margin-bottom: 0;
+  font-size: var(--font-size-header);
+  font-weight: 600;
+  color: var(--text-on-dark);
+  margin: 0;
 }
 
 /* Header information */
-.team-header {
-    font-weight: 600;
-    padding: 0 10px;
-    margin-bottom: 6px;
+.script-author {
+  font-size: var(--font-size-body-two);
+  color: var(--text-on-dark);
+  margin: 0;
 }
 
-.script-author {
-    margin: 0;
+.team-header {
+  font-size: var(--font-size-body-one);
+  font-weight: 600;
+  color: var(--color-brand-tan);
+  padding: var(--space-6x) 0 0 0;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+
+.team-header::after {
+  content: ' ';
+  display: inline-block;
+  height: 0.5em;
+  vertical-align: bottom;
+  width: 100%;
+  margin-right: -100%;
+  margin-left: var(--space-4x);
+  border-top: 1px solid var(--color-brand-tan);
+  
 }
 
 /* Individual role card */
 .role-card {
   margin: 10px 0;
-  padding: 10px;
+  padding: var(--space-3x);
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: var(--space-6x);
   margin: 0;
+  background-color: transparent;
+  border-radius: var(--border-radius-large);
+  transition: all 300ms ease-in-out;
+}
+
+.role-card:hover {
+  background-color: var(--color-brand-dark-purple);
+  transition: all 300ms ease-out;
 }
 
 /* Role icon image */
@@ -58,6 +137,8 @@ body {
   width: 65px;
   height: 65px;
   object-fit: cover;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-default);
 }
 
 /* Role information container */
@@ -68,9 +149,9 @@ body {
 /* Role name heading */
 .role-name {
   margin: 0 0 5px 0;
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--text-on-dark);
+  font-size: var(--font-size-body-one);
+  font-weight: 700;
 }
 
 /* Role team span */
@@ -83,10 +164,11 @@ body {
 
 /* Role ability description */
 .role-ability {
+  font-family: var(--font-body);
+  font-size: var(--font-size-caption);;
+  color: var(--text-on-dark);
   margin: 0;
-  font-size: 14px;
   line-height: 1.4;
-  color: #555;
 }
 
 /* Loading and empty states */
@@ -119,15 +201,15 @@ body {
   .script-name {
     font-size: 1.2em;
   }
-
+  
   .script-author {
     font-size: 0.9em;
   }
-
+  
   .team-header {
     font-size: 1em;
   }
-
+  
   .role-icon {
     width: 50px;
     height: 50px;
@@ -137,62 +219,62 @@ body {
 
 /* Mobile style overrides */
 .mobile {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    margin: 10px;
-    width: 90%;
-    max-width: 400px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  margin: 10px;
+  width: 90%;
+  max-width: 400px;
 }
 
 /* Dark mode style overrides */
 .dark {
-    background-color: #34323b;
-    color: #ffffff;
+  background-color: #34323b;
+  color: #ffffff;
 }
 
 .dark .extension-container {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .dark .role-card {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .dark .role-card:hover {
-    background-color: #374151;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  background-color: #374151;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .dark .role-icon {
-    border-color: #4a5568;
-    background-color: #FFFFFF;
-    border-radius: 5%;
+  border-color: #4a5568;
+  background-color: #FFFFFF;
+  border-radius: 5%;
 }
 
 .dark .role-name {
-    color: #f7fafc;
+  color: #f7fafc;
 }
 
 .dark .role-team {
-    color: #a0aec0;
+  color: #a0aec0;
 }
 
 .dark .role-ability {
-    color: #e2e8f0;
+  color: #e2e8f0;
 }
 
 .dark .loading-message {
-    background-color: #2b6cb0;
-    color: #e6fffa;
-    border-color: #3182ce;
+  background-color: #2b6cb0;
+  color: #e6fffa;
+  border-color: #3182ce;
 }
 
 .dark .empty-message {
-    background-color: #744210;
-    color: #fef5e7;
-    border-color: #d69e2e;
+  background-color: #744210;
+  color: #fef5e7;
+  border-color: #d69e2e;
 }
