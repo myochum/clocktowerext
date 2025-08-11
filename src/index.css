@@ -24,6 +24,7 @@
   --space-10x: 128px;
   --border-radius-default: 8px;
   --border-radius-large: 20px;
+  --game-token-size: 72px;
 }
 
 
@@ -54,16 +55,19 @@ body {
   padding: var(--space-6x);
   margin: var(--space-6x);
   height: calc(100vh - 132px);
+  background-image: url( '/assets/img/bg/bg-pattern.svg' );
   background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default);
   border: 2px solid var(--color-brand-tan);
   overflow: hidden;
 }
 
-/* .extensions-video-overlay-size-container .extension-container {
-max-width: 35%;
-float: right;
-} */
+@media screen and (max-width: 920px) {
+  .extension-container {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+}
+
 
 .container-content {
   -ms-overflow-style: none;
@@ -82,7 +86,7 @@ float: right;
 .script-name {
   font-size: var(--font-size-header);
   font-weight: 600;
-  color: var(--text-on-dark);
+  color: var(--color-brand-tan);
   margin: 0;
 }
 
@@ -98,7 +102,7 @@ float: right;
   font-weight: 600;
   color: var(--color-brand-tan);
   padding: var(--space-6x) 0 0 0;
-  margin-bottom: 6px;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -120,7 +124,7 @@ float: right;
   padding: var(--space-3x);
   display: flex;
   align-items: center;
-  gap: var(--space-6x);
+  gap: var(--space-4x);
   margin: 0;
   background-color: transparent;
   border-radius: var(--border-radius-large);
@@ -134,11 +138,13 @@ float: right;
 
 /* Role icon image */
 .role-icon {
-  width: 65px;
-  height: 65px;
+  width: var(--game-token-size);
+  height: var(--game-token-size);
   object-fit: cover;
   background-color: var(--color-white);
-  border-radius: var(--border-radius-default);
+  border-radius: 50%;
+  border: 2px solid var(--color-black);
+  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.35));
 }
 
 /* Role information container */
