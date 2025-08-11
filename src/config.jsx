@@ -137,9 +137,11 @@ function ConfigApp() {
       console.log('Config format:', configFormated);
       
       // Save to Twitch
+      const version = Date.now().toString();
+      console.log('Version:', version);
       window.Twitch.ext.configuration.set(
         'broadcaster',
-        '1',
+        version,
         JSON.stringify(configFormated)
       );
 
