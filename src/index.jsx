@@ -137,8 +137,8 @@ function PanelApp() {
             </div>
             <div className="collapse-button">
               <button type="button" onClick={toggleCollapsed}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                  <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
+                <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
+                  <path d="M0 0H60L30 25L0 0Z"/>
                 </svg>
               </button>
             </div>
@@ -156,8 +156,8 @@ function PanelApp() {
 
             <div className="collapse-button">
               <button type="button" onClick={toggleCollapsed}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                  <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
+                <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
+                  <path d="M0 0H60L30 25L0 0Z"/>
                 </svg>
               </button>
             </div>
