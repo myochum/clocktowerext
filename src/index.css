@@ -240,7 +240,7 @@ body {
   font-family: var( --font-primary);
   font-weight: var(--font-weight-regular);
   color: var(--text-on-dark);
-  border-radiusvar(--border-radius-full);
+  border-radius: var(--border-radius-full);
   border: none;
   border: 2px solid var(--color-brand-purple);
   background-color: var(--color-white);
