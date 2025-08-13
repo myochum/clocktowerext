@@ -13,13 +13,17 @@ const getTeamIcon = (role) => {
 
 const getRole = (character) => {
   return roles.find(role => role.id === character);
-}
+};
 
 function PanelApp() {
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const toggleCollapsed = () => {
+    setIsCollapsed(!isCollapsed);
+      };
   
   // Check if this is mobile version
   const isMobile = document.getElementById('root')?.getAttribute('data-mobile') === 'true';
@@ -102,15 +106,41 @@ function PanelApp() {
 
     if (config) {
     return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
-        <div className="container-content">
-          {config.name && (
-            <div className="script-header">
-              <h2 className="script-name">{config.name}</h2>
-              {config.author && <p className="script-author">by {config.author}</p>}
+      <div className={`extension-container${isCollapsed && isVideo ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
+        <div className="collapse-content">
+          <div className="header-container">
+            <div className="helper-text">
+              CHARACTERS
             </div>
-          )}
-          
+            <div className="collapse-button">
+              <button type="button" onClick={toggleCollapsed}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="container-content">
+          <div className="header-container">
+            {config.name && (
+              <div className="script-header">
+                <h2 className="script-name">{config.name}</h2>
+                {config.author && <p className="script-author">by {config.author}</p>}
+              </div>
+            )}
+            {isVideo && (
+              <div className="collapse-button">
+                <button type="button" onClick={toggleCollapsed}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+
           {Object.entries(config.roles).map(([teamKey, teamRoles]) => {
             if (!teamRoles || teamRoles.length === 0) return null;
             
