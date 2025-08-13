@@ -235,7 +235,7 @@ body {
   color: var(--text-on-dark);
   border-radius: 50%;
   border: none;
-  /*background-color: var(--color-brand-dark-purple);*/
+  background-color: var(--color-brand-dark-purple);
   background-color: white;
   transition: all 300ms ease-in;
 }
