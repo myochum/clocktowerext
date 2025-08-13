@@ -12,6 +12,9 @@
   --font-size-body-one: 24px;
   --font-size-body-two: 20px;
   --font-size-caption: 16px;
+  --font-weight-regular: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   --space-1x: 4px;
   --space-2x: 8px;
   --space-3x: 12px;
@@ -24,7 +27,10 @@
   --space-10x: 128px;
   --border-radius-default: 8px;
   --border-radius-large: 20px;
-  --game-token-size: 72px;
+  --border-radius-full: 50%;
+  --role-icon-desktop: 72px;
+  --role-icon-mobile: 50px;
+  --collapse-btn-size: 30px;
 }
 
 
@@ -85,7 +91,7 @@ body {
 
 .script-name {
   font-size: var(--font-size-header);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--color-brand-tan);
   margin: 0;
 }
@@ -104,7 +110,7 @@ body {
 
 .team-header {
   font-size: var(--font-size-body-one);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--color-brand-tan);
   padding: var(--space-6x) 0 0 0;
   margin: 0;
@@ -143,11 +149,11 @@ body {
 
 /* Role icon image */
 .role-icon {
-  width: var(--game-token-size);
-  height: var(--game-token-size);
+  width: var(--role-icon-desktop);
+  height: var(--role-icon-desktop);
   object-fit: cover;
   background-color: var(--color-white);
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   border: 2px solid var(--color-black);
   filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.35));
 }
@@ -162,7 +168,7 @@ body {
   margin: 0 0 5px 0;
   color: var(--text-on-dark);
   font-size: var(--font-size-body-one);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 /* Role team span */
@@ -185,30 +191,31 @@ body {
 /* Collapsed states */
 .collapse {
   display: inline-block;
-  /*max-height: 20px;*/
   height: auto;
   width: auto;
-  padding: 0px;
   justify-self: end;
   overflow: hidden;
-  transition: max-height .5s cubic-bezier(0, 1, 0, 1);
+}
+
+.collapse, .expand {
+  transition: all 300ms ease;
 }
 
 .collapse .collapse-content {
   display: grid;
   justify-self: center;
   align-self: center;
-  padding: var(--space-2x) var(--space-4x);
   border: none;
   background: none;
 }
 
 .collapse .helper-text {
   font-size: var(--font-size-body-two);
-  font-family: var( --font-primary);
-  font-weight: 600;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-on-dark);
   margin-right: var(--space-3x);
+  line-height: 1.6;
 } 
 
 .collapse .container-content {
@@ -227,35 +234,43 @@ body {
 .expand button {
   position:relative;
   justify-self: end;
-  width: 25px;
-  height: 25px;
+  width: var(--collapse-btn-size);
+  height: var(--collapse-btn-size);
   font-size: var(--font-size-body-two);
   font-family: var( --font-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
   color: var(--text-on-dark);
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   border: none;
-  background-color: var(--color-brand-dark-purple);
-  background-color: white;
-  transition: all 300ms ease-in;
+  border: 2px solid var(--color-brand-purple);
+  background-color: var(--color-white);
 }
 
 .expand button:hover,
 .collapse button:hover {
   background-color: var(--color-brand-purple);
-  transition: all 300ms ease-out;
+  border: 2px solid var(--color-white);
+  cursor: pointer;
+}
+
+.container-vis-icon {
+  fill: var(--color-brand-dark-purple)
+}
+
+.expand button:hover > .container-vis-icon,
+.collapse button:hover > .container-vis-icon{
+  fill: var(--color-white);
 }
 
 .expand button svg,
 .collapse button svg {
-  position: absolute;
   width: 100%;
-  top: 11px;
-  left: 5px;
+  transition: transform 300ms ease;
 }
 
 .collapse button svg {
   transform: rotate(-90deg);
+  transition: transform 300ms ease;
 }
 
 /* Loading and empty states */
@@ -266,7 +281,7 @@ body {
   color: #666;
   font-size: 16px;
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: var(--border-radius-default);
   margin: 20px;
   border: 2px dashed #dee2e6;
 }
@@ -298,8 +313,8 @@ body {
   }
   
   .role-icon {
-    width: 50px;
-    height: 50px;
+    width: var(--role-icon-mobile);
+    height: var(--role-icon-mobile);
   }
 }
 
