@@ -106,7 +106,7 @@ function PanelApp() {
 
     if (config) {
     return (
-      <div className={`extension-container${isCollapsed ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
+      <div className={`extension-container${isCollapsed && isVideo ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
         <div className="collapse-content">
           <div className="header-container">
             <div className="helper-text">
@@ -130,14 +130,15 @@ function PanelApp() {
                 {config.author && <p className="script-author">by {config.author}</p>}
               </div>
             )}
-
-            <div className="collapse-button">
-              <button type="button" onClick={toggleCollapsed}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                  <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
-                </svg>
-              </button>
-            </div>
+            {isVideo && (
+              <div className="collapse-button">
+                <button type="button" onClick={toggleCollapsed}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <path d="M 0 0 H 60 L 30 25 L 0 0" fill="#c98883"/>
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
 
           {Object.entries(config.roles).map(([teamKey, teamRoles]) => {
