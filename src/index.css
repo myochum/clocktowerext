@@ -64,24 +64,6 @@ body {
   overflow: hidden;
 }
 
-/*@media screen and (max-width: 920px) {
-  .extension-container {
-    grid-area: 1 / 1 / 2 / 3;
-  }
-}*/
-
-.collapse-tab {
-  height: fit-content;
-  margin-top: var(--space-5x);
-  padding: var(--space-3x);
-  background-color: var(--color-brand-tan);
-}
-
-.collapse-tab .helper-text {
-  text-orientation: mixed;
-  writing-mode: sideways-lr;
-}
-
 .container-content {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -199,6 +181,23 @@ body {
 }
 
 /* Collapsed states */
+
+.collapse-tab {
+  height: fit-content;
+  margin-top: var(--space-5x);
+  padding: var(--space-3x);
+  background-color: var(--color-brand-tan);
+}
+
+.collapse-tab .helper-text {
+  text-orientation: mixed;
+  writing-mode: sideways-lr;
+  font-size: var(--font-size-body-two);
+  font-family: var(--font-primary);
+  margin-right: var(--space-3x);
+  line-height: 1.6;
+}
+
 .collapse {
   display: inline-block;
   height: auto;
@@ -218,15 +217,6 @@ body {
   border: none;
   background: none;
 }
-
-.collapse .helper-text {
-  font-size: var(--font-size-body-two);
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-on-dark);
-  margin-right: var(--space-3x);
-  line-height: 1.6;
-} 
 
 .collapse .container-content {
   display: none;

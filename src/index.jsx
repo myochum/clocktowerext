@@ -130,47 +130,17 @@ function PanelApp() {
     if (config) {
     return (
       <div className={`extension-container${isCollapsed && isVideo ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
-        
-        <div className="collapse-tab" onClick={toggleCollapsed}>
+        {isVideo && <div className="collapse-tab" onClick={toggleCollapsed}>
             <div className="helper-text">
-            <span>                
-{/*              <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
-                  <path d="M0 0H60L30 25L0 0Z"/>
-              </svg>*/}
-            </span>
-              CHARACTERS
+              <span>CHARACTERS</span>
             </div>
-        </div>
-
-        {/*<div className="collapse-tab">
-            <div className="helper-text">
-              CHARACTERS
-            </div>
-            <div className="collapse-button">
-              <button type="button" onClick={toggleCollapsed}>
-                <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
-                  <path d="M0 0H60L30 25L0 0Z"/>
-                </svg>
-              </button>
-            </div>
-        </div>*/}
-
-
+        </div>}
         <div className="container-content">
           <div className="header-container">
             {config.name && (
               <div className="script-header">
                 <h2 className="script-name">{config.name}</h2>
                 {config.author && <p className="script-author">by {config.author}</p>}
-              </div>
-            )}
-            {isVideo && (
-              <div className="collapse-button">
-                <button type="button" onClick={toggleCollapsed}>
-                  <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
-                    <path d="M0 0H60L30 25L0 0Z"/>
-                  </svg>
-                </button>
               </div>
             )}
           </div>
