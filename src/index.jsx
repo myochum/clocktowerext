@@ -107,8 +107,19 @@ function PanelApp() {
     if (config) {
     return (
       <div className={`extension-container${isCollapsed && isVideo ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
-        <div className="collapse-content">
-          <div className="header-container">
+        
+        <div className="collapse-tab" onClick={toggleCollapsed}>
+            <div className="helper-text">
+            <span>                
+{/*              <svg class="container-vis-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" fill="none">
+                  <path d="M0 0H60L30 25L0 0Z"/>
+              </svg>*/}
+            </span>
+              CHARACTERS
+            </div>
+        </div>
+
+        {/*<div className="collapse-tab">
             <div className="helper-text">
               CHARACTERS
             </div>
@@ -119,8 +130,8 @@ function PanelApp() {
                 </svg>
               </button>
             </div>
-          </div>
-        </div>
+        </div>*/}
+
 
         <div className="container-content">
           <div className="header-container">
