@@ -16,18 +16,20 @@ const getRole = (character) => {
 };
 
 export function PanelApp() {
+  // Check if this is mobile version
+  const isMobile = document.getElementById('root')?.getAttribute('data-mobile') === 'true';
+  const isVideo = document.getElementById('root')?.getAttribute('data-video') === 'true';
+
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const toggleCollapsed = () => {
-    setIsCollapsed(!isCollapsed);
-      };
+  const [collapsedState, setCollapsedState] = useState(isVideo ? 'collapse' : 'expanded');
+  const toggleCollapsed = () => { 
+    setCollapsedState(collapsedState.includes('collapse') ? 'expanded' : 'collapse animate'); 
+  };
   
-  // Check if this is mobile version
-  const isMobile = document.getElementById('root')?.getAttribute('data-mobile') === 'true';
-  const isVideo = document.getElementById('root')?.getAttribute('data-video') === 'true';
+
 
   useEffect(() => {
       // ========== TWITCH MODE: Initialize Twitch extension ==========
@@ -106,7 +108,7 @@ export function PanelApp() {
 
     if (config) {
     return (
-      <div className={`extension-container${isCollapsed && isVideo ? ' collapse' : ' expand'}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
+      <div className={`extension-container ${collapsedState}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
         {isVideo && <div className="collapse-tab" onClick={toggleCollapsed}>
             <div className="helper-text">
               <span>CHARACTERS</span>
