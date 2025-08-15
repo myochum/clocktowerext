@@ -15,7 +15,7 @@ const getRole = (character) => {
   return roles.find(role => role.id === character);
 };
 
-function PanelApp() {
+export function PanelApp() {
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
   const [loading, setLoading] = useState(true);
