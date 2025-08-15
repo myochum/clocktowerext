@@ -319,7 +319,7 @@ body {
   overflow-x: hidden;
   height: 100vh;
   width: 50px;
-  animation: slider-close 700ms ease;
+  /* animation: slider-close 700ms ease; */
 }
 
 .collapse-button {
