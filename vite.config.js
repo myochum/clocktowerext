@@ -42,7 +42,8 @@ export default defineConfig({
         main: __dirname + '/src/index.html',
         config: __dirname + '/src/config.html',
         mobile: __dirname + '/src/mobile.html',
-        video: __dirname + '/src/video.html'
+        video: __dirname + '/src/video.html',
+        test: __dirname + '/src/dev/test.html'
       }
     }
   },
