@@ -64,7 +64,7 @@ body {
   overflow: hidden;
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 540px) {
   #root {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -75,7 +75,25 @@ body {
   
   .extension-container {
     display: grid;
-    grid-area: 1 / 3 / 2 / 5;
+    grid-area: 1 / 1 / 2 / 5;
+    grid-auto-flow: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 541px) and (max-width: 1023px) {
+  #root {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  
+  .extension-container {
+    display: grid;
+    grid-area: 1 / 3 / 2 / 6;
     grid-auto-flow: column;
     height: 100vh;
     overflow: hidden;
@@ -99,7 +117,6 @@ body {
   }
 }
 
-
 .container-content {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -107,9 +124,9 @@ body {
   background-image: url( '/assets/img/bg/bg-pattern.svg' );
   background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
-  border-left: 2px solid var(--color-brand-dark-purple);
+  /* border-left: 2px solid var(--color-brand-dark-purple);
   border-top: 2px solid var(--color-brand-dark-purple);
-  border-bottom: 2px solid var(--color-brand-dark-purple);
+  border-bottom: 2px solid var(--color-brand-dark-purple); */
   overflow-y: scroll;
   box-sizing: content-box; /* So the width will be 100% + 17px */
 }
@@ -224,7 +241,7 @@ body {
   height: fit-content;
   margin-top: var(--space-5x);
   padding: var(--space-3x);
-  background-color: var(--color-brand-tan);
+  background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
   border-top: 2px solid var(--color-brand-purple);
   border-left: 2px solid var(--color-brand-purple);
@@ -233,26 +250,15 @@ body {
 
 .collapse-tab:hover {
   cursor: pointer;
-  background-color: var(--color-brand-purple);
-  transition: all 400ms ease;
 }
 
 .collapse-tab .helper-text {
-  text-orientation: mixed;
-  writing-mode: sideways-lr;
+  color: var(--color-white);
   font-size: var(--font-size-body-two);
   font-family: var(--font-primary);
   line-height: 1.6;
-  transition: all 400ms ease;
-}
-
-.collapse-tab:hover .helper-text{
-  color: var(--color-white);
-  transition: all 400ms ease;
-}
-
-.collapse-tab:hover .helper-text > span::before {
-  filter: invert(1);
+  text-orientation: mixed;
+  writing-mode: sideways-lr;
   transition: all 400ms ease;
 }
 
@@ -262,12 +268,12 @@ body {
   content: ' ';
   width: 20px;
   height: 20px;
+  filter: invert(1);
   background-image: url(/assets/img/book.svg);
   background-repeat: no-repeat;
   margin-top: 8px;
   left: var(--space-1x);
   position: relative;
-  filter: invert(0);
   transition: all 400ms ease;
 }
 
@@ -312,15 +318,26 @@ body {
 
 .extension-container.expand {
   animation: slider 500ms ease;
+  /* width: fit-content; */
+  /* transform: translateX(0); */
+  /* transition: all 400ms ease; */
 }
-
 
 .collapse {
   overflow-x: hidden;
   height: 100vh;
   width: 50px;
-  /* animation: slider-close 700ms ease; */
+  /* transform: translateX(calc(100% - 50px)); */
+  /* transition: all 400ms ease; */
+  animation: slider-close 700ms ease;
 }
+
+/* .initial {
+overflow-x: hidden;
+height: 100vh;
+width: 50px;
+transform: translateX(calc(100% - 50px));
+} */
 
 .collapse-button {
   display: grid;

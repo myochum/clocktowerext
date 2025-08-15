@@ -1,3 +1,7 @@
+:root {
+    --color-brand-purple: #2D122F;
+}
+
 /* Config page specific styles */
 .config-container {
   padding: 20px;
@@ -85,6 +89,7 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
 .config-save-btn {
@@ -96,10 +101,12 @@
   cursor: pointer;
   background: #9147ff;
   color: white;
+  transition: all 300ms ease;
 }
 
 .config-save-btn:hover {
-  background: #7c3aed;
+  background: var(--color-brand-purple);
+  transition: all 300ms ease;
 }
 
 .config-example-box {
@@ -107,7 +114,6 @@
   padding: 15px;
   background-color: #f8f9fa;
   border-radius: 6px;
-  border-left: 4px solid #9147ff;
   overflow: hidden;
 }
 
