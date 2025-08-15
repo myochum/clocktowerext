@@ -369,6 +369,11 @@ body {
   transition: transform 300ms ease;
 }
 
+.animate {
+  animation: slider-close 700ms ease;
+}
+
+
 /* Loading and empty states */
 .loading-message,
 .empty-message {
