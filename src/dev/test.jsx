@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import { PanelApp } from './index.jsx';
+import '../index.css';
+import { PanelApp } from '../index.jsx';
 
 // Simple test wrapper that mocks Twitch and provides test config
 function TestWrapper() {
@@ -9,7 +9,7 @@ function TestWrapper() {
 
   useEffect(() => {
     // Load test config and mock Twitch API
-    fetch('./test_config.txt')
+    fetch('../test_config.txt')
       .then(response => response.text())
       .then(text => {
         const scriptData = JSON.parse(text);

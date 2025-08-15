@@ -43,7 +43,7 @@ export default defineConfig({
         config: __dirname + '/src/config.html',
         mobile: __dirname + '/src/mobile.html',
         video: __dirname + '/src/video.html',
-        dev: __dirname + '/src/dev/test.html'
+        test: __dirname + '/src/dev/test.html'
       }
     }
   },
