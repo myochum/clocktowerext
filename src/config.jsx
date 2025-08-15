@@ -193,7 +193,14 @@ function ConfigApp() {
               {validationMessage}
             </div>
           )}
-          
+          <div className="config-buttons">
+          <button 
+            onClick={handleSave}
+            className="config-save-btn"
+          >
+            Save Configuration
+          </button>
+        </div>
           <div className="config-example-box">
             <strong>Example scripts (both formats supported):</strong>
             <div style={{marginBottom: '15px'}}>
@@ -223,15 +230,6 @@ function ConfigApp() {
               </pre>
             </div>
           </div>
-        </div>
-        
-        <div className="config-buttons">
-          <button 
-            onClick={handleSave}
-            className="config-save-btn"
-          >
-            Save Configuration
-          </button>
         </div>
       </div>
     </div>
