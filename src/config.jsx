@@ -94,7 +94,8 @@ function ConfigApp() {
         .slice(1) // Skip first element (meta object)
         .map(item => {
           // Return the character ID (either the string itself or the id property)
-          return typeof item === 'string' ? item : item.id;
+          //Remove any non-letter values and lowercase the rest 
+          return typeof item === 'string' ? item.replace(/[^a-zA-Z]/g, '').toLowerCase() : item.id.replace(/[^a-zA-Z]/g, '').toLowerCase();
         })
 
       if (characters.length === 0) {
