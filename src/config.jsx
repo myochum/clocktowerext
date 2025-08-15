@@ -104,7 +104,7 @@ function ConfigApp() {
         return;
       }
 
-      const invalidCharacters = characters.filter(item => roles.find(role => role.id === item) === undefined);
+      const invalidCharacters = characters.filter(item => roles[item] === undefined);
       if (invalidCharacters.length > 0) {
         setValidationMessage('❌ Invalid character found in script: ' + invalidCharacters.join(', '));
         setValidationStatus('error');
@@ -130,7 +130,7 @@ function ConfigApp() {
 
       // Categorize characters by team
       characters.forEach(characterId => {
-        const role = roles.find(r => r.id === characterId);
+        const role = roles[characterId];
         if (role && configFormated.roles[role.team]) {
           configFormated.roles[role.team].push(characterId);
         }

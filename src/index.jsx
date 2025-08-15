@@ -3,16 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import roles from './assets/roles.json';
 
-const getRoleIcon = (role) => {
-  return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
+const getRoleIcon = (character) => {
+  return new URL(`./assets/icons/${character}.png`, import.meta.url).href;
 };
 
-const getTeamIcon = (role) => {
-  return new URL(`./assets/icons/${role.team}.png`, import.meta.url).href;
-};
-
-const getRole = (character) => {
-  return roles.find(role => role.id === character);
+const getTeamIcon = (team) => {
+  return new URL(`./assets/icons/${team}.png`, import.meta.url).href;
 };
 
 export function PanelApp() {
@@ -135,23 +131,23 @@ export function PanelApp() {
                 <h3 className="team-header">{teamName}{teamName === 'Fabled' || teamName === 'Townsfolk' ? '' : 's'}</h3>
                 <div className="team-roles">
                   {teamRoles.map((character, index) => {
-                    const role = getRole(character);
+                    const role = roles[character];
                     if (role) {
-                      const iconSrc = getRoleIcon(role);
+                      const iconSrc = getRoleIcon(character);
                       return (
-                        <div key={role.id} className="role-card">
+                        <div key={character} className="role-card">
                           {iconSrc && (
                             <img 
                               src={iconSrc} 
-                              alt={`${role.name} icon`}
+                              alt={`${character} icon`}
                               className="role-icon"
                               onError={(e) => { 
-                                e.target.src = getTeamIcon(role);
+                                e.target.src = getTeamIcon(role.team);
                               }}
                             />
                           )}
                           <div className="role-info">
-                            <h4 className="role-name">{role.name}</h4>
+                            <h4 className="role-name">{role.name || character}</h4>
                             <p className="role-ability">{role.ability}</p>
                           </div>
                         </div>
