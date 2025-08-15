@@ -94,7 +94,8 @@ function ConfigApp() {
         .slice(1) // Skip first element (meta object)
         .map(item => {
           // Return the character ID (either the string itself or the id property)
-          return typeof item === 'string' ? item : item.id;
+          //Remove any non-letter values and lowercase the rest 
+          return typeof item === 'string' ? item.replace(/[^a-zA-Z]/g, '').toLowerCase() : item.id.replace(/[^a-zA-Z]/g, '').toLowerCase();
         })
 
       if (characters.length === 0) {
@@ -103,7 +104,7 @@ function ConfigApp() {
         return;
       }
 
-      const invalidCharacters = characters.filter(item => roles.find(role => role.id === item) === undefined);
+      const invalidCharacters = characters.filter(item => roles[item] === undefined);
       if (invalidCharacters.length > 0) {
         setValidationMessage('❌ Invalid character found in script: ' + invalidCharacters.join(', '));
         setValidationStatus('error');
@@ -129,7 +130,7 @@ function ConfigApp() {
 
       // Categorize characters by team
       characters.forEach(characterId => {
-        const role = roles.find(r => r.id === characterId);
+        const role = roles[characterId];
         if (role && configFormated.roles[role.team]) {
           configFormated.roles[role.team].push(characterId);
         }
