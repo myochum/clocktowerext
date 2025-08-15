@@ -31,6 +31,7 @@
   --role-icon-desktop: 48px;
   --role-icon-mobile: 50px;
   --collapse-btn-size: 30px;
+  --collapse-tab-width: 50px;
 }
 
 
@@ -239,7 +240,7 @@ body {
 
 .collapse-tab {
   height: fit-content;
-  margin-top: var(--space-5x);
+  margin: auto 0;
   padding: var(--space-3x);
   background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
@@ -292,14 +293,22 @@ body {
   background: none;
 }
 
+/*
+Using keyframe animations since transition doesn't allow granular control over how widths are handled.
+*/
+
 @keyframes slider {
   0% {
-    transform: translateX(calc(100% - 50px));
+    transform: translateX(calc(100% - var(--collapse-tab-width)));
   }
   100% {
     transform: translateX(0);
   }
 }
+
+/*
+Drawer close animation - 99.9% point changes the width to a fixed value while container-content is off screen so there isn't a flash or jitter in animation.
+*/
 
 @keyframes slider-close {
   0% {
@@ -307,37 +316,28 @@ body {
     transform: translateX(0);
   }
   99.9% {
-    width: 50px;
-    transform: translateX(calc(99% - 50px));
+    width: auto;
+    transform: translateX(calc(99.9% - var(--collapse-tab-width)));
   }
   100% {
     width: 50px;
-    transform: translateX(calc(100% - 50px));
+    transform: translateX(calc(100% - var(--collapse-tab-width)));
   }
-}
-
-.extension-container.expand {
-  animation: slider 500ms ease;
-  /* width: fit-content; */
-  /* transform: translateX(0); */
-  /* transition: all 400ms ease; */
 }
 
 .collapse {
   overflow-x: hidden;
   height: 100vh;
-  width: 50px;
-  /* transform: translateX(calc(100% - 50px)); */
-  /* transition: all 400ms ease; */
-  animation: slider-close 700ms ease;
+  width: var(--collapse-tab-width);
 }
 
-/* .initial {
-overflow-x: hidden;
-height: 100vh;
-width: 50px;
-transform: translateX(calc(100% - 50px));
-} */
+.extension-container.expanded {
+  animation: slider 700ms ease;
+}
+
+.animate {
+  animation: slider-close 700ms ease;
+}
 
 .collapse-button {
   display: grid;
@@ -385,11 +385,6 @@ transform: translateX(calc(100% - 50px));
   transform: rotate(-90deg);
   transition: transform 300ms ease;
 }
-
-.animate {
-  animation: slider-close 700ms ease;
-}
-
 
 /* Loading and empty states */
 .loading-message,
