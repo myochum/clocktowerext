@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import roles from './assets/roles.json';
 
-// Determine if we're in test mode based on environment or URL
-const TEST_MODE = window.location.hostname === 'localhost' || window.location.search.includes('test=true');
-
-// Helper function to get role icon - Vite compatible
 const getRoleIcon = (role) => {
   return new URL(`./assets/icons/${role.id}.png`, import.meta.url).href;
 };
@@ -19,7 +15,7 @@ const getRole = (character) => {
   return roles.find(role => role.id === character);
 };
 
-export function PanelApp() {
+function PanelApp() {
   const [config, setConfig] = useState(null);
   const [twitchReady, setTwitchReady] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -34,25 +30,6 @@ export function PanelApp() {
   const isVideo = document.getElementById('root')?.getAttribute('data-video') === 'true';
 
   useEffect(() => {
-    if (TEST_MODE) {
-      // ========== TEST MODE: Load test config ==========
-      fetch('./test_config.txt')
-        .then(response => response.text())
-        .then(text => {
-          try {
-            const scriptData = JSON.parse(text);
-            setConfig(scriptData);
-            setLoading(false);
-          } catch (e) {
-            console.error("Error parsing test config:", e);
-            setLoading(false);
-          }
-        })
-        .catch(err => {
-          console.error("Error loading test config:", err);
-          setLoading(false);
-        });
-    } else {
       // ========== TWITCH MODE: Initialize Twitch extension ==========
       const initTwitch = () => {
         if (window.Twitch && window.Twitch.ext) {
@@ -117,7 +94,6 @@ export function PanelApp() {
 
         return () => clearInterval(checkTwitch);
       }
-    }
   }, []);
 
   if (loading) {
