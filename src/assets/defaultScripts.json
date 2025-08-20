@@ -1,0 +1,28 @@
+{
+  "Trouble Brewing" : [
+    {
+      "id": "_meta", 
+      "name": "Trouble Brewing", 
+      "author": "The Pandemonium Institute"
+    }, 
+    {"id": "washerwoman"},{"id": "librarian"}, {"id": "investigator"}, {"id": "chef"}, {"id": "empath"}, {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"}, {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"}, {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"}, {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"}, {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"}, {"id": "baron"}, {"id": "imp"} 
+  ],
+
+  "Sects & Violets" : [
+    {
+      "id": "_meta", 
+      "name": "Sects & Violets", 
+      "author": "The Pandemonium Institute"
+    }, 
+    {"id": "clockmaker"}, {"id": "dreamer"}, {"id": "snakecharmer"}, {"id": "mathematician"}, {"id": "flowergirl"}, {"id": "towncrier"}, {"id": "oracle"}, {"id": "savant"}, {"id": "seamstress"}, {"id": "philosopher"}, {"id": "artist"}, {"id": "juggler"}, {"id": "sage"}, {"id": "mutant"}, {"id": "sweetheart"}, {"id": "barber"}, {"id": "klutz"}, {"id": "eviltwin"}, {"id": "witch"}, {"id": "cerenovus"}, {"id": "pithag"}, {"id": "fanggu"}, {"id": "vigormortis"}, {"id": "nodashii"}, {"id": "vortox"}
+  ],
+
+  "Bad Moon Rising" : [
+    {
+      "id": "_meta", 
+      "name": "Bad Moon Rising", 
+      "author": "The Pandemonium Institute"
+    }, 
+    {"id": "grandmother"}, {"id": "sailor"}, {"id": "chambermaid"}, {"id": "exorcist"}, {"id": "innkeeper"}, {"id": "gambler"}, {"id": "gossip"}, {"id": "courtier"}, {"id": "professor"}, {"id": "minstrel"}, {"id": "tealady"}, {"id": "pacifist"}, {"id": "fool"}, {"id": "tinker"}, {"id": "moonchild"}, {"id": "goon"}, {"id": "lunatic"}, {"id": "godfather"}, {"id": "devilsadvocate"}, {"id": "assassin"}, {"id": "mastermind"}, {"id": "zombuul"}, {"id": "pukka"}, {"id": "shabaloth"}, {"id": "po"}
+  ]
+}

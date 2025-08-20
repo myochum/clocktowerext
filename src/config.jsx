@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './config.css';
 import roles from './assets/roles.json';
+import scripts from './assets/defaultScripts.json';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
@@ -48,10 +49,8 @@ function ConfigApp() {
     const val = ev.target.value;
     setOption(val);
 
-    const edition = editionArray[val];
-    if (edition) {
-      setInputValue(edition.script);
-    }
+    const edition = scripts[val];
+    setInputValue(edition.name);
   };
 
   const handleFileUpload = (e) => {
@@ -199,7 +198,7 @@ function ConfigApp() {
       [{"id": "_meta", "name": "Bad Moon Rising", "author": "The Pandemonium Institute"}, {"id": "grandmother"}, {"id": "sailor"}, {"id": "chambermaid"}, {"id": "exorcist"}, {"id": "innkeeper"}, {"id": "gambler"}, {"id": "gossip"}, {"id": "courtier"}, {"id": "professor"}, {"id": "minstrel"}, {"id": "tealady"}, {"id": "pacifist"}, {"id": "fool"}, {"id": "tinker"}, {"id": "moonchild"}, {"id": "goon"}, {"id": "lunatic"}, {"id": "godfather"}, {"id": "devilsadvocate"}, {"id": "assassin"}, {"id": "mastermind"}, {"id": "zombuul"}, {"id": "pukka"}, {"id": "shabaloth"}, {"id": "po"}]
       )
   },
-];
+  ];
 
   return (
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
@@ -215,8 +214,8 @@ function ConfigApp() {
               Choose one of the Base 3 editions:
             </label>
             <select value={option} onChange={onChange}>
-              {editionArray.map((edition, index) => (
-                <option value={index} key={index}>
+              {scripts.map((name, index) => (
+                <option value={edition.name}>
                   {edition.name}
                 </option>
               ))}
