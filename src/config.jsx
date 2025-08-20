@@ -49,8 +49,8 @@ function ConfigApp() {
     const val = ev.target.value;
     setOption(val);
 
-    const edition = scripts[val];
-    setInputValue(edition.name);
+    const script = JSON.stringify(scripts[val]);
+    setInputValue(script);
   };
 
   const handleFileUpload = (e) => {
@@ -171,35 +171,6 @@ function ConfigApp() {
     }
   };
 
-  const editionArray = [
-  {
-    name: "Select a script...",
-    value: "",
-    script: "",
-  },
-  {
-    name: "Trouble Brewing",
-    value: "tb",
-    script: JSON.stringify(
-      [{"id": "_meta", "name": "Trouble Brewing", "author": "The Pandemonium Institute"}, {"id": "washerwoman"}, {"id": "librarian"}, {"id": "investigator"}, {"id": "chef"}, {"id": "empath"}, {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"}, {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"}, {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"}, {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"}, {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"}, {"id": "baron"}, {"id": "imp"}] 
-        )
-  },
-  {
-    name: "Sects & Violets",
-    value: "snv",
-    script: JSON.stringify(
-      [{"id": "_meta", "name": "Sects & Violets", "author": "The Pandemonium Institute"}, {"id": "clockmaker"}, {"id": "dreamer"}, {"id": "snakecharmer"}, {"id": "mathematician"}, {"id": "flowergirl"}, {"id": "towncrier"}, {"id": "oracle"}, {"id": "savant"}, {"id": "seamstress"}, {"id": "philosopher"}, {"id": "artist"}, {"id": "juggler"}, {"id": "sage"}, {"id": "mutant"}, {"id": "sweetheart"}, {"id": "barber"}, {"id": "klutz"}, {"id": "eviltwin"}, {"id": "witch"}, {"id": "cerenovus"}, {"id": "pithag"}, {"id": "fanggu"}, {"id": "vigormortis"}, {"id": "nodashii"}, {"id": "vortox"}]
-      )
-  },
-  {
-    name: "Bad Mood Rising",
-    value: "bmr",
-    script: JSON.stringify(
-      [{"id": "_meta", "name": "Bad Moon Rising", "author": "The Pandemonium Institute"}, {"id": "grandmother"}, {"id": "sailor"}, {"id": "chambermaid"}, {"id": "exorcist"}, {"id": "innkeeper"}, {"id": "gambler"}, {"id": "gossip"}, {"id": "courtier"}, {"id": "professor"}, {"id": "minstrel"}, {"id": "tealady"}, {"id": "pacifist"}, {"id": "fool"}, {"id": "tinker"}, {"id": "moonchild"}, {"id": "goon"}, {"id": "lunatic"}, {"id": "godfather"}, {"id": "devilsadvocate"}, {"id": "assassin"}, {"id": "mastermind"}, {"id": "zombuul"}, {"id": "pukka"}, {"id": "shabaloth"}, {"id": "po"}]
-      )
-  },
-  ];
-
   return (
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
@@ -214,9 +185,10 @@ function ConfigApp() {
               Choose one of the Base 3 editions:
             </label>
             <select value={option} onChange={onChange}>
-              {scripts.map((name, index) => (
-                <option value={edition.name}>
-                  {edition.name}
+              <option selected="selected" value="" disabled>Select an edition...</option>
+              {Object.entries(scripts).map(([scriptName, scriptRoles]) => (
+                <option value={scriptName}>
+                  {scriptName}
                 </option>
               ))}
             </select>
