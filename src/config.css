@@ -1,45 +1,84 @@
 :root {
-    --color-brand-purple: #2D122F;
+  --font-body: "Open Sans", 'Helvetica Neue', sans-serif;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-brand-purple: #2D122F;
+  --color-brand-dark-purple: #220824;
+  --color-brand-tan: #F2D8C6;
+  --text-on-light: #333333;
+  --text-on-dark: #F2F2F2;
+  --font-size-header: 28px;
+  --font-size-body-one: 18px;
+  --font-size-body-two: 16px;
+  --font-size-caption: 14px;
+  --font-weight-regular: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --space-1x: 4px;
+  --space-2x: 8px;
+  --space-3x: 12px;
+  --space-4x: 16px;
+  --space-5x: 24px;
+  --space-6x: 32px;
+  --space-7x: 48px;
+  --space-8x: 56px;
+  --space-9x: 64px;
+  --space-10x: 128px;
+  --border-radius-default: 8px;
+  --border-radius-large: 20px;
+  --border-radius-full: 50%;
 }
 
 /* Config page specific styles */
+body {
+  background-color: var(--color-brand-purple);
+}
+
 .config-container {
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   width: 100%;
   box-sizing: border-box;
 }
 
-@media (max-width: 640px) {
-  .config-container {
-    padding: 15px;
-    max-width: 100%;
-  }
-  
-  .config-example {
-    font-size: 10px;
-    padding: 8px;
-  }
+.config-form {
+  padding: var(--space-2x) var(--space-5x);
+  background-color: var(--color-brand-dark-purple);
+  border-radius: var(--border-radius-default);
 }
 
-.config-form-group {
-  margin-bottom: 20px;
+h1 {
+  font-size: var(--font-size-header);
+  color: var(--color-white);
+  font-weight: var(--font-weight-semibold);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-two);
+  color: var(--color-white);
 }
 
 .config-label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
+  margin-top: var(--space-4x);
+  margin-bottom: var(--space-2x);
+  font-size: var(--font-size-body-one);
+  color: var(--color-white);
+  font-weight: var(--font-weight-regular);
+}
+
+.config-file-input {
+  color: var(--color-white);
 }
 
 .config-textarea {
   width: 100%;
   min-height: 120px;
-  padding: 12px;
+  margin-top: var(--space-4x);
+  padding: var(--space-3x);
   border: 2px solid #e0e0e0;
   border-radius: 6px;
   font-size: 14px;
@@ -50,8 +89,32 @@
   overflow-wrap: break-word;
 }
 
+.config-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: var(--space-4x) 0;
+}
+
+.config-save-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #9147ff;
+  color: white;
+  transition: all 300ms ease;
+}
+
+.config-save-btn:hover {
+  background: var(--color-brand-purple);
+  transition: all 300ms ease;
+}
+
 .config-validation-message {
-  margin-top: 10px;
+  margin: var(--space-3x) 0;
   padding: 8px 12px;
   border-radius: 4px;
 }
@@ -85,30 +148,6 @@
   border: 1px solid #e2e8f0;
 }
 
-.config-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.config-save-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  background: #9147ff;
-  color: white;
-  transition: all 300ms ease;
-}
-
-.config-save-btn:hover {
-  background: var(--color-brand-purple);
-  transition: all 300ms ease;
-}
-
 .config-example-box {
   margin-top: 15px;
   padding: 15px;
@@ -116,6 +155,24 @@
   border-radius: 6px;
   overflow: hidden;
 }
+
+details {
+  margin: var(--space-3x) 0;
+  color: var(--color-white);
+}
+
+@media (max-width: 640px) {
+  .config-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+  
+  .config-example {
+    font-size: 10px;
+    padding: 8px;
+  }
+}
+
 
 /* Dark mode style overrides */
 .dark {

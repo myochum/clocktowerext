@@ -166,72 +166,87 @@ function ConfigApp() {
   return (
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
-        <div className="config-form-group">
-          <label htmlFor="fileInput" className="config-label">
-            Upload your game script:
-          </label>
-          <input 
-            type="file"
-            id="fileInput"
-            accept=".json,.txt"
-            onChange={handleFileUpload}
-            className="config-file-input"
-          />
-          
-          <label htmlFor="characterInput" className="config-label" style={{marginTop: '20px'}}>
-            Or paste your game script:
-          </label>
-          <textarea 
-            id="characterInput"
-            value={inputValue}
-            onChange={handleInputChange}
-            className="config-textarea"
-            placeholder="Paste your JSON script here..."
-          />
-          
-          {validationMessage && (
+        <div className="header">  
+          <h1>Configure displayed script</h1>
+          <p>Update your current script by using one of the options below. Note that your viewers may need to refresh the stream to see the updates.</p>
+          <p>If no script is currently saved, the extension will not display.</p>
+        </div>
+        <div className="config-form">
+          <div className="form-base3">
+            <label htmlFor="base3" className="config-label">
+              Choose one of the Base 3 editions:
+            </label>
+            <select className="base-editions" id="base3">
+              <option selected="selected" value="">Select a Base 3 script...</option>
+              <option value="tb">Trouble Brewing</option>
+              <option value="snv">Sects & Violets</option>
+              <option value="bmr">Bad Mood Rising</option>
+            </select>
+          </div>
+          <div className="config-upload">
+            <label htmlFor="fileInput" className="config-label">
+              Or upload/paste a custom script:
+            </label>
+            <input 
+              type="file"
+              id="fileInput"
+              accept=".json,.txt"
+              onChange={handleFileUpload}
+              className="config-file-input"
+            />
+          </div>
+          <div className="config-input">
+            <textarea 
+              id="characterInput"
+              value={inputValue}
+              onChange={handleInputChange}
+              className="config-textarea"
+              placeholder="Paste your JSON script here..."
+            />
+          </div>
+
+          <div className="config-buttons">
+            <button 
+              onClick={handleSave}
+              className="config-save-btn"
+            >
+              Save Configuration
+            </button>
+          </div>
+          <div classname="config-validation">
+            {validationMessage && (
             <div className={`config-validation-message ${validationStatus}`}>
               {validationMessage}
             </div>
-          )}
-          <div className="config-buttons">
-          <button 
-            onClick={handleSave}
-            className="config-save-btn"
-          >
-            Save Configuration
-          </button>
-        </div>
-          <div className="config-example-box">
-            <strong>Example scripts (both formats supported):</strong>
-            <div style={{marginBottom: '15px'}}>
-              <strong>Format v1 (object format):</strong>
-              <pre className="config-example">
-{`[
-  {"id": "_meta", "name": "Trouble Brewing", "author": "The Pandemonium Institute"},
-  {"id": "washerwoman"}, {"id": "librarian"}, {"id": "investigator"},
-  {"id": "chef"}, {"id": "empath"},
-  {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"},
-  {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"},
-  {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"},
-  {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"},
-  {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"},
-  {"id": "baron"}, {"id": "imp"}
-]`}
-              </pre>
-            </div>
-            <div>
-              <strong>Format v2 (string format):</strong>
-              <pre className="config-example">
-{`[
-  {"id": "_meta", "name": "Lunar Eclipse", "author": "Ekin"},
-  "grandmother", "pixie", "sailor", "chambermaid",
-  "mathematician", "innkeeper", "lycanthrope"
-]`}
-              </pre>
-            </div>
+            )}
           </div>
         </div>
+        <details classname="config-faq">
+        <summary>What script formats are accepted?</summary>
+          <p>This extension accepts the JSON formats from the official site as well as botcscripts.com.</p>
+          <p>See the following examples:</p>  
+          <pre className="config-example">
+{`[
+  {"id": "_meta", "name": "No Greater Joy", "author": "Steven Medway"},
+  {"id": "clockmaker"}, {"id": "investigator"}, {"id": "empath"}, 
+  {"id": "chambermaid"}, {"id": "artist"}, {"id": "sage"}, {"id": "drunk"},
+  {"id": "klutz"}, {"id": "scarletwoman"}, {"id": "baron"}, {"id": "imp"}
+]`}
+        </pre>
+        <pre className="config-example">
+{`[
+  {"id": "_meta", "name": "No Greater Joy", "author": "Steven Medway"},
+  "clockmaker", "investigator", "empath", "chambermaid", "artist", "sage",
+  "drunk", "klutz", "scarletwoman", "baron", "imp"
+]`}
+          </pre>
+        </details>
+        <details classname="config-faq">
+          <summary>Are homebrew characters supported?</summary>
+          <p>At this point, homebrew characters are not supported.</p>
+        </details>
+
+
       </div>
     </div>
   );
