@@ -5,6 +5,7 @@ import roles from './assets/roles.json';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
+  const [option, setOption] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
   const [validationStatus, setValidationStatus] = useState('');
   const [twitchReady, setTwitchReady] = useState(false);
@@ -43,7 +44,15 @@ function ConfigApp() {
     }
   }, []);
 
+  const onChange = (ev) => {
+    const val = ev.target.value;
+    setOption(val);
 
+    const edition = editionArray[val];
+    if (edition) {
+      setInputValue(edition.script);
+    }
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -163,6 +172,35 @@ function ConfigApp() {
     }
   };
 
+  const editionArray = [
+  {
+    name: "Select a script...",
+    value: "",
+    script: "",
+  },
+  {
+    name: "Trouble Brewing",
+    value: "tb",
+    script: JSON.stringify(
+      [{"id": "_meta", "name": "Trouble Brewing", "author": "The Pandemonium Institute"}, {"id": "washerwoman"}, {"id": "librarian"}, {"id": "investigator"}, {"id": "chef"}, {"id": "empath"}, {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"}, {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"}, {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"}, {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"}, {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"}, {"id": "baron"}, {"id": "imp"}] 
+        )
+  },
+  {
+    name: "Sects & Violets",
+    value: "snv",
+    script: JSON.stringify(
+      [{"id": "_meta", "name": "Sects & Violets", "author": "The Pandemonium Institute"}, {"id": "clockmaker"}, {"id": "dreamer"}, {"id": "snakecharmer"}, {"id": "mathematician"}, {"id": "flowergirl"}, {"id": "towncrier"}, {"id": "oracle"}, {"id": "savant"}, {"id": "seamstress"}, {"id": "philosopher"}, {"id": "artist"}, {"id": "juggler"}, {"id": "sage"}, {"id": "mutant"}, {"id": "sweetheart"}, {"id": "barber"}, {"id": "klutz"}, {"id": "eviltwin"}, {"id": "witch"}, {"id": "cerenovus"}, {"id": "pithag"}, {"id": "fanggu"}, {"id": "vigormortis"}, {"id": "nodashii"}, {"id": "vortox"}]
+      )
+  },
+  {
+    name: "Bad Mood Rising",
+    value: "bmr",
+    script: JSON.stringify(
+      [{"id": "_meta", "name": "Bad Moon Rising", "author": "The Pandemonium Institute"}, {"id": "grandmother"}, {"id": "sailor"}, {"id": "chambermaid"}, {"id": "exorcist"}, {"id": "innkeeper"}, {"id": "gambler"}, {"id": "gossip"}, {"id": "courtier"}, {"id": "professor"}, {"id": "minstrel"}, {"id": "tealady"}, {"id": "pacifist"}, {"id": "fool"}, {"id": "tinker"}, {"id": "moonchild"}, {"id": "goon"}, {"id": "lunatic"}, {"id": "godfather"}, {"id": "devilsadvocate"}, {"id": "assassin"}, {"id": "mastermind"}, {"id": "zombuul"}, {"id": "pukka"}, {"id": "shabaloth"}, {"id": "po"}]
+      )
+  },
+];
+
   return (
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
@@ -176,11 +214,12 @@ function ConfigApp() {
             <label htmlFor="base3" className="config-label">
               Choose one of the Base 3 editions:
             </label>
-            <select className="base-editions" id="base3">
-              <option selected="selected" value="">Select a Base 3 script...</option>
-              <option value="tb">Trouble Brewing</option>
-              <option value="snv">Sects & Violets</option>
-              <option value="bmr">Bad Mood Rising</option>
+            <select value={option} onChange={onChange}>
+              {editionArray.map((edition, index) => (
+                <option value={index} key={index}>
+                  {edition.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="config-upload">
@@ -204,7 +243,6 @@ function ConfigApp() {
               placeholder="Paste your JSON script here..."
             />
           </div>
-
           <div className="config-buttons">
             <button 
               onClick={handleSave}
