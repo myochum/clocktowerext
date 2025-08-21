@@ -53,7 +53,13 @@ body {
   border-radius: var(--border-radius-default);
   border-color: var(--color-white);
   color: var(--color-white);
-  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+}
+
+.config-instruct {
+  margin: var(--space-4x) 0;
+  padding: 0 var(--space-5x);
+  color: var(--color-white);
   font-size: var(--font-size-caption);
 }
 

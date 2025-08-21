@@ -188,8 +188,10 @@ function ConfigApp() {
                 }
               &nbsp;characters)
           </div>
-          <p>Update your current script by using one of the options below. Note that your viewers may need to refresh the stream to see the updates.</p>
-          <p>If no script is currently saved, the extension will not display.</p>
+          <div className="config-instruct">
+            <p>Update your current script by using one of the options below. Note that your viewers may need to refresh the stream to see the updates.</p>
+            <p>If no script is currently saved, the extension will not display.</p>
+          </div>
         </div>
         <div className="config-form">
           <div className="form-base3">
