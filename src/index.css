@@ -240,7 +240,7 @@ body {
 
 .collapse-tab {
   height: fit-content;
-  margin: auto 0;
+  margin: 50% 0;
   padding: var(--space-3x);
   background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);

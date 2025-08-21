@@ -94,14 +94,6 @@ export function PanelApp() {
       }
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}`}>
-        <div className="loading-message">Loading...</div>
-      </div>
-    );
-  }
-
     if (config) {
     return (
       <div className={`extension-container ${collapsedState}${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}${isDarkMode ? ' dark' : ''}`}>
@@ -161,12 +153,6 @@ export function PanelApp() {
             );
           })}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}`}>
-        <div className="empty-message">No character configuration found. Please set up your character list in the extension configuration.</div>
       </div>
     );
   }
