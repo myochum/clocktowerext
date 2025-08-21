@@ -12,6 +12,11 @@ function ConfigApp() {
   const [twitchReady, setTwitchReady] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  //TEST LINES TO MOCK UP TWITCH BROADCAST VIEW
+  const testFormatted = {
+    "name":"Trouble Brewing","author":"The Pandemonium Institute","roles":{"townsfolk":["washerwoman","librarian","investigator","chef","empath","fortuneteller","undertaker","monk","ravenkeeper","virgin","slayer","soldier","mayor"],"outsider":["butler","drunk","recluse","saint"],"minion":["poisoner","spy","scarletwoman","baron"],"demon":["imp"],"traveller":[],"fabled":[]}
+  };
+
   useEffect(() => {
     const initTwitch = () => {
       if (window.Twitch && window.Twitch.ext) {
@@ -70,7 +75,7 @@ function ConfigApp() {
 
   const handleSave = () => {
     console.log('Save button clicked');
-    
+
     // Basic validation
     if (!inputValue.trim()) {
       setValidationMessage('❌ Please enter script before saving');
@@ -123,7 +128,7 @@ function ConfigApp() {
       // Extract meta data from first element
       const metaItem = scriptData[0];
       
-      const configFormated = {
+      const configFormatted = {
         name: metaItem?.name || "",
         author: metaItem?.author || "",
         roles: {
@@ -139,19 +144,19 @@ function ConfigApp() {
       // Categorize characters by team
       characters.forEach(characterId => {
         const role = roles[characterId];
-        if (role && configFormated.roles[role.team]) {
-          configFormated.roles[role.team].push(characterId);
+        if (role && configFormatted.roles[role.team]) {
+          configFormatted.roles[role.team].push(characterId);
         }
       });
-      console.log('Config format:', configFormated);
-      
+      console.log('Config format:', configFormatted);
+
       // Save to Twitch
       const version = Date.now().toString();
       console.log('Version:', version);
       window.Twitch.ext.configuration.set(
         'broadcaster',
         version,
-        JSON.stringify(configFormated)
+        JSON.stringify(configFormatted)
       );
 
       // Show success message
@@ -171,11 +176,18 @@ function ConfigApp() {
     }
   };
 
-  return (
+  return ( 
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
         <div className="header">  
           <h1>Configure displayed script</h1>
+          <div className="config-current">
+            <em>Current script:</em> &nbsp;{testFormatted.name}&nbsp; (
+                {
+                  testFormatted.roles.townsfolk.length + testFormatted.roles.outsider.length + testFormatted.roles.minion.length + testFormatted.roles.demon.length + testFormatted.roles.traveller.length + testFormatted.roles.fabled.length
+                }
+              &nbsp;characters)
+          </div>
           <p>Update your current script by using one of the options below. Note that your viewers may need to refresh the stream to see the updates.</p>
           <p>If no script is currently saved, the extension will not display.</p>
         </div>

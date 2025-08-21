@@ -43,6 +43,20 @@ body {
   box-sizing: border-box;
 }
 
+.config-current {
+  margin-top: var(--space-4x);
+  margin-bottom: var(--space-5x);
+  padding: var(--space-2x) var(--space-4x);
+  background-color: var(--color-brand-dark-purple);
+  border-style: dashed;
+  border-width: 1px;
+  border-radius: var(--border-radius-default);
+  border-color: var(--color-white);
+  color: var(--color-white);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+}
+
 .config-form {
   padding: var(--space-2x) var(--space-5x);
   background-color: var(--color-brand-dark-purple);
@@ -57,7 +71,7 @@ h1 {
 
 p {
   font-family: var(--font-body);
-  font-size: var(--font-size-body-two);
+  font-size: var(--font-size-caption);
   color: var(--color-white);
 }
 
