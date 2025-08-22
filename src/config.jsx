@@ -163,6 +163,8 @@ function ConfigApp() {
         JSON.stringify(configFormatted)
       );
 
+      setSavedScript(configFormatted);
+
       // Show success message
       setValidationMessage(`✅ Configuration saved successfully! (${characters.length} characters)`);
       setValidationStatus('valid');
