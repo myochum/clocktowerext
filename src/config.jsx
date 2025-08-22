@@ -21,15 +21,18 @@ function ConfigApp() {
         setTwitchReady(true);
         window.Twitch.ext.onAuthorized((auth) => {
           console.log('Twitch extension authorized');
+          if (window?.Twitch?.ext?.configuration?.broadcaster?.content?.length > 0) {
+            setSavedScript(JSON.parse(window.Twitch.ext.configuration.broadcaster.content));
+            console.log('Saved script:', savedScript);
+          }
         });
 
+        
         window.Twitch.ext.onContext((context) => {
           console.log('Twitch extension context:', context);
           setIsDarkMode(context.theme === 'dark');
         });
-        if (window?.Twitch?.ext?.configuration?.broadcaster?.content) {
-          setSavedScript(JSON.parse(window.Twitch.ext.configuration.broadcaster.content));
-        }
+       
       }
     };
 
