@@ -2,20 +2,18 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './config.css';
 import roles from './assets/roles.json';
-import scripts from './assets/defaultScripts.json';
+import defaultScripts from './assets/defaultScripts.json';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
-  const [option, setOption] = useState('');
+  const [defaultScript, setDefaultScript] = useState('');
+  const [savedScript, setSavedScript] = useState({});
+
   const [validationMessage, setValidationMessage] = useState('');
   const [validationStatus, setValidationStatus] = useState('');
+
   const [twitchReady, setTwitchReady] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  //TEST LINES TO MOCK UP TWITCH BROADCAST VIEW
-  const testFormatted = {
-    "name":"Trouble Brewing","author":"The Pandemonium Institute","roles":{"townsfolk":["washerwoman","librarian","investigator","chef","empath","fortuneteller","undertaker","monk","ravenkeeper","virgin","slayer","soldier","mayor"],"outsider":["butler","drunk","recluse","saint"],"minion":["poisoner","spy","scarletwoman","baron"],"demon":["imp"],"traveller":[],"fabled":[]}
-  };
 
   useEffect(() => {
     const initTwitch = () => {
@@ -29,6 +27,9 @@ function ConfigApp() {
           console.log('Twitch extension context:', context);
           setIsDarkMode(context.theme === 'dark');
         });
+        if (window?.Twitch?.ext?.configuration?.broadcaster?.content) {
+          setSavedScript(JSON.parse(window.Twitch.ext.configuration.broadcaster.content));
+        }
       }
     };
 
@@ -52,9 +53,9 @@ function ConfigApp() {
 
   const onChange = (ev) => {
     const val = ev.target.value;
-    setOption(val);
+    setDefaultScript(val);
 
-    const script = JSON.stringify(scripts[val]);
+    const script = JSON.stringify(defaultScripts[val]);
     setInputValue(script);
   };
 
@@ -182,9 +183,9 @@ function ConfigApp() {
         <div className="header">  
           <h1>Configure displayed script</h1>
           <div className="config-current">
-            <em>Current script:</em> &nbsp;{testFormatted.name}&nbsp; (
+            <em>Current script:</em> &nbsp;{savedScript.name}&nbsp; (
                 {
-                  testFormatted.roles.townsfolk.length + testFormatted.roles.outsider.length + testFormatted.roles.minion.length + testFormatted.roles.demon.length + testFormatted.roles.traveller.length + testFormatted.roles.fabled.length
+                  Object.values(savedScript.roles || {}).reduce((total, roleArray) => total + roleArray.length, 0)
                 }
               &nbsp;characters)
           </div>
@@ -198,9 +199,9 @@ function ConfigApp() {
             <label htmlFor="base3" className="config-label">
               Choose one of the Base 3 editions:
             </label>
-            <select value={option} onChange={onChange}>
+            <select value={defaultScript} onChange={onChange}>
               <option selected="selected" value="" disabled>Select an edition...</option>
-              {Object.entries(scripts).map(([scriptName, scriptRoles]) => (
+              {Object.keys(defaultScripts).map((scriptName) => (
                 <option value={scriptName}>
                   {scriptName}
                 </option>
