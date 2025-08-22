@@ -166,7 +166,7 @@ export function PanelApp() {
   } else {
     return (
       <div className={`extension-container${isMobile ? ' mobile' : ''}${isVideo ? ' video' : ''}`}>
-        <div className="empty-message">No character configuration found. Please set up your character list in the extension configuration.</div>
+        <div className="empty-message">No characters have been uploaded.</div>
       </div>
     );
   }

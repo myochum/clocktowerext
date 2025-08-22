@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './config.css';
 import roles from './assets/roles.json';
+import scripts from './assets/defaultScripts.json';
 
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
+  const [option, setOption] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
   const [validationStatus, setValidationStatus] = useState('');
   const [twitchReady, setTwitchReady] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  //TEST LINES TO MOCK UP TWITCH BROADCAST VIEW
+  const testFormatted = {
+    "name":"Trouble Brewing","author":"The Pandemonium Institute","roles":{"townsfolk":["washerwoman","librarian","investigator","chef","empath","fortuneteller","undertaker","monk","ravenkeeper","virgin","slayer","soldier","mayor"],"outsider":["butler","drunk","recluse","saint"],"minion":["poisoner","spy","scarletwoman","baron"],"demon":["imp"],"traveller":[],"fabled":[]}
+  };
 
   useEffect(() => {
     const initTwitch = () => {
@@ -43,7 +50,13 @@ function ConfigApp() {
     }
   }, []);
 
+  const onChange = (ev) => {
+    const val = ev.target.value;
+    setOption(val);
 
+    const script = JSON.stringify(scripts[val]);
+    setInputValue(script);
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -62,7 +75,7 @@ function ConfigApp() {
 
   const handleSave = () => {
     console.log('Save button clicked');
-    
+
     // Basic validation
     if (!inputValue.trim()) {
       setValidationMessage('❌ Please enter script before saving');
@@ -115,7 +128,7 @@ function ConfigApp() {
       // Extract meta data from first element
       const metaItem = scriptData[0];
       
-      const configFormated = {
+      const configFormatted = {
         name: metaItem?.name || "",
         author: metaItem?.author || "",
         roles: {
@@ -131,19 +144,19 @@ function ConfigApp() {
       // Categorize characters by team
       characters.forEach(characterId => {
         const role = roles[characterId];
-        if (role && configFormated.roles[role.team]) {
-          configFormated.roles[role.team].push(characterId);
+        if (role && configFormatted.roles[role.team]) {
+          configFormatted.roles[role.team].push(characterId);
         }
       });
-      console.log('Config format:', configFormated);
-      
+      console.log('Config format:', configFormatted);
+
       // Save to Twitch
       const version = Date.now().toString();
       console.log('Version:', version);
       window.Twitch.ext.configuration.set(
         'broadcaster',
         version,
-        JSON.stringify(configFormated)
+        JSON.stringify(configFormatted)
       );
 
       // Show success message
@@ -163,75 +176,100 @@ function ConfigApp() {
     }
   };
 
-  return (
+  return ( 
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
       <div className="config-container">
-        <div className="config-form-group">
-          <label htmlFor="fileInput" className="config-label">
-            Upload your game script:
-          </label>
-          <input 
-            type="file"
-            id="fileInput"
-            accept=".json,.txt"
-            onChange={handleFileUpload}
-            className="config-file-input"
-          />
-          
-          <label htmlFor="characterInput" className="config-label" style={{marginTop: '20px'}}>
-            Or paste your game script:
-          </label>
-          <textarea 
-            id="characterInput"
-            value={inputValue}
-            onChange={handleInputChange}
-            className="config-textarea"
-            placeholder="Paste your JSON script here..."
-          />
-          
-          {validationMessage && (
+        <div className="header">  
+          <h1>Configure displayed script</h1>
+          <div className="config-current">
+            <em>Current script:</em> &nbsp;{testFormatted.name}&nbsp; (
+                {
+                  testFormatted.roles.townsfolk.length + testFormatted.roles.outsider.length + testFormatted.roles.minion.length + testFormatted.roles.demon.length + testFormatted.roles.traveller.length + testFormatted.roles.fabled.length
+                }
+              &nbsp;characters)
+          </div>
+          <div className="config-instruct">
+            <p>Update your current script by using one of the options below. Note that your viewers may need to refresh the stream to see the updates.</p>
+            <p>If no script is currently saved, the extension will not display.</p>
+          </div>
+        </div>
+        <div className="config-form">
+          <div className="form-base3">
+            <label htmlFor="base3" className="config-label">
+              Choose one of the Base 3 editions:
+            </label>
+            <select value={option} onChange={onChange}>
+              <option selected="selected" value="" disabled>Select an edition...</option>
+              {Object.entries(scripts).map(([scriptName, scriptRoles]) => (
+                <option value={scriptName}>
+                  {scriptName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="config-upload">
+            <label htmlFor="fileInput" className="config-label">
+              Or upload/paste a custom script:
+            </label>
+            <input 
+              type="file"
+              id="fileInput"
+              accept=".json,.txt"
+              onChange={handleFileUpload}
+              className="config-file-input"
+            />
+          </div>
+          <div className="config-input">
+            <textarea 
+              id="characterInput"
+              value={inputValue}
+              onChange={handleInputChange}
+              className="config-textarea"
+              placeholder="Paste your JSON script here..."
+            />
+          </div>
+          <div className="config-buttons">
+            <button 
+              onClick={handleSave}
+              className="config-save-btn"
+            >
+              Save Configuration
+            </button>
+          </div>
+          <div classname="config-validation">
+            {validationMessage && (
             <div className={`config-validation-message ${validationStatus}`}>
               {validationMessage}
             </div>
-          )}
-          <div className="config-buttons">
-          <button 
-            onClick={handleSave}
-            className="config-save-btn"
-          >
-            Save Configuration
-          </button>
-        </div>
-          <div className="config-example-box">
-            <strong>Example scripts (both formats supported):</strong>
-            <div style={{marginBottom: '15px'}}>
-              <strong>Format v1 (object format):</strong>
-              <pre className="config-example">
-{`[
-  {"id": "_meta", "name": "Trouble Brewing", "author": "The Pandemonium Institute"},
-  {"id": "washerwoman"}, {"id": "librarian"}, {"id": "investigator"},
-  {"id": "chef"}, {"id": "empath"},
-  {"id": "fortuneteller"}, {"id": "undertaker"}, {"id": "monk"},
-  {"id": "ravenkeeper"}, {"id": "virgin"}, {"id": "slayer"},
-  {"id": "soldier"}, {"id": "mayor"}, {"id": "butler"},
-  {"id": "drunk"}, {"id": "recluse"}, {"id": "saint"},
-  {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"},
-  {"id": "baron"}, {"id": "imp"}
-]`}
-              </pre>
-            </div>
-            <div>
-              <strong>Format v2 (string format):</strong>
-              <pre className="config-example">
-{`[
-  {"id": "_meta", "name": "Lunar Eclipse", "author": "Ekin"},
-  "grandmother", "pixie", "sailor", "chambermaid",
-  "mathematician", "innkeeper", "lycanthrope"
-]`}
-              </pre>
-            </div>
+            )}
           </div>
         </div>
+        <details classname="config-faq">
+        <summary>What script formats are accepted?</summary>
+          <p>This extension accepts the JSON formats from the official site as well as botcscripts.com.</p>
+          <p>See the following examples:</p>  
+          <pre className="config-example">
+{`[
+  {"id": "_meta", "name": "No Greater Joy", "author": "Steven Medway"},
+  {"id": "clockmaker"}, {"id": "investigator"}, {"id": "empath"}, 
+  {"id": "chambermaid"}, {"id": "artist"}, {"id": "sage"}, {"id": "drunk"},
+  {"id": "klutz"}, {"id": "scarletwoman"}, {"id": "baron"}, {"id": "imp"}
+]`}
+        </pre>
+        <pre className="config-example">
+{`[
+  {"id": "_meta", "name": "No Greater Joy", "author": "Steven Medway"},
+  "clockmaker", "investigator", "empath", "chambermaid", "artist", "sage",
+  "drunk", "klutz", "scarletwoman", "baron", "imp"
+]`}
+          </pre>
+        </details>
+        <details classname="config-faq">
+          <summary>Are homebrew characters supported?</summary>
+          <p>At this point, homebrew characters are not supported.</p>
+        </details>
+
+
       </div>
     </div>
   );
