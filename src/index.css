@@ -444,3 +444,20 @@ Drawer close animation - 99.9% point changes the width to a fixed value while co
   width: 90%;
   max-width: 400px;
 }
+
+/* --- Mobile: let the whole view scroll --- */
+.extension-container.mobile {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.extension-container.mobile .container-content {
+  overflow: visible;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.extension-container.mobile {
+  grid-auto-flow: row;
+}
