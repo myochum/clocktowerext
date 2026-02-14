@@ -137,7 +137,8 @@ function ConfigApp() {
           minion: [],
           demon: [],
           traveller: [],
-          fabled: []
+          fabled: [],
+          loric: []
         }
       };
 
