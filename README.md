@@ -7,4 +7,4 @@ Configuration can be tested as is at https://localhost:8080/config.html.
 To test the extenion, you will need to use a dummy test config.
 
 
-To install to Twitch, run `npm run build && cd build && zip -r ../clocktowerext.zip .` and upload to https://dev.twitch.tv/ Extensions.
+To install to Twitch, run `npm run build && cd build && zip -r ../clocktowerext.zip .` and upload to https://dev.twitch.tv/ Extensions. Ensure the dev/ folder is excluded from the build.
