@@ -119,7 +119,7 @@ body {
   padding: var(--space-6x) var(--space-5x);
   background-image: url( '/assets/img/bg/bg-pattern.svg' );
   background-color: var(--color-brand-purple);
-  border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
+  border-radius: 0 0 0 var(--border-radius-default);
   /* border-left: 2px solid var(--color-brand-dark-purple);
   border-top: 2px solid var(--color-brand-dark-purple);
   border-bottom: 2px solid var(--color-brand-dark-purple); */
@@ -235,7 +235,8 @@ body {
 
 .collapse-tab {
   height: fit-content;
-  margin: auto 0;
+  margin: 0;
+  align-self: start;
   padding: var(--space-3x);
   background-color: var(--color-brand-purple);
   border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
