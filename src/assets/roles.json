@@ -786,7 +786,7 @@
   },
   "bootlegger": {
     "name": "Bootlegger",
-    "team": "fabled",
+    "team": "loric",
     "ability": "This script has homebrew characters or rules."
   },
   "buddhist": {
@@ -831,7 +831,7 @@
   },
   "gardener": {
     "name": "Gardener",
-    "team": "fabled",
+    "team": "loric",
     "ability": "The Storyteller assigns 1 or more players' characters."
   },
   "hellslibrarian": {
@@ -856,7 +856,7 @@
   },
   "stormcatcher": {
     "name": "Storm Catcher",
-    "team": "fabled",
+    "team": "loric",
     "ability": "Name a good character. If in play, they can only die by execution, but evil players learn which player it is."
   },
   "toymaker": {
