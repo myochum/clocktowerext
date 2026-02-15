@@ -4,6 +4,63 @@ import './config.css';
 import roles from './assets/roles.json';
 import scripts from './assets/defaultScripts.json';
 
+const countAllRoleTypes = (roleGroups = {}) => {
+  return Object.values(roleGroups).reduce((total, group) => {
+    return total + (Array.isArray(group) ? group.length : 0);
+  }, 0);
+};
+
+const normalizeCharacterId = (item) => {
+  const rawId = typeof item === 'string' ? item : item?.id;
+  if (typeof rawId !== 'string') {
+    return null;
+  }
+
+  return rawId.replace(/[^a-zA-Z]/g, '').toLowerCase();
+};
+
+const parseScriptArray = (scriptData) => {
+  if (!Array.isArray(scriptData)) {
+    throw new Error('Script must be a JSON array');
+  }
+
+  const characters = scriptData
+    .slice(1)
+    .map(normalizeCharacterId)
+    .filter(Boolean);
+
+  if (characters.length === 0) {
+    throw new Error('No valid characters found in script');
+  }
+
+  const invalidCharacters = characters.filter((item) => roles[item] === undefined);
+  if (invalidCharacters.length > 0) {
+    throw new Error('Invalid character found in script: ' + invalidCharacters.join(', '));
+  }
+
+  const metaItem = scriptData[0];
+  const configFormatted = {
+    name: metaItem?.name || '',
+    author: metaItem?.author || '',
+    roles: {}
+  };
+
+  characters.forEach((characterId) => {
+    const role = roles[characterId];
+    if (!role?.team) {
+      return;
+    }
+
+    if (!configFormatted.roles[role.team]) {
+      configFormatted.roles[role.team] = [];
+    }
+
+    configFormatted.roles[role.team].push(characterId);
+  });
+
+  return { configFormatted, characterCount: characters.length };
+};
+
 function ConfigApp() {
   const [inputValue, setInputValue] = useState('');
   const [option, setOption] = useState('');
@@ -11,11 +68,8 @@ function ConfigApp() {
   const [validationStatus, setValidationStatus] = useState('');
   const [twitchReady, setTwitchReady] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  //TEST LINES TO MOCK UP TWITCH BROADCAST VIEW
-  const testFormatted = {
-    "name":"Trouble Brewing","author":"The Pandemonium Institute","roles":{"townsfolk":["washerwoman","librarian","investigator","chef","empath","fortuneteller","undertaker","monk","ravenkeeper","virgin","slayer","soldier","mayor"],"outsider":["butler","drunk","recluse","saint"],"minion":["poisoner","spy","scarletwoman","baron"],"demon":["imp"],"traveller":[],"fabled":[]}
-  };
+  const [savedConfig, setSavedConfig] = useState(null);
+  const [previewConfig, setPreviewConfig] = useState(null);
 
   useEffect(() => {
     const initTwitch = () => {
@@ -23,6 +77,25 @@ function ConfigApp() {
         setTwitchReady(true);
         window.Twitch.ext.onAuthorized((auth) => {
           console.log('Twitch extension authorized');
+
+          const loadSavedConfig = () => {
+            const broadcasterConfig = window.Twitch.ext.configuration.broadcaster;
+
+            if (broadcasterConfig?.content) {
+              try {
+                setSavedConfig(JSON.parse(broadcasterConfig.content));
+              } catch (error) {
+                console.error('Invalid broadcaster config JSON:', error);
+                setSavedConfig(null);
+              }
+              return;
+            }
+
+            setSavedConfig(null);
+          };
+
+          loadSavedConfig();
+          window.Twitch.ext.configuration.onChanged(loadSavedConfig);
         });
 
         window.Twitch.ext.onContext((context) => {
@@ -61,6 +134,7 @@ function ConfigApp() {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setOption('');
       const reader = new FileReader();
       reader.onload = (event) => {
         setInputValue(event.target.result);
@@ -70,8 +144,24 @@ function ConfigApp() {
   };
 
   const handleInputChange = (e) => {
+    setOption('');
     setInputValue(e.target.value);
   };
+
+  useEffect(() => {
+    if (!inputValue.trim()) {
+      setPreviewConfig(null);
+      return;
+    }
+
+    try {
+      const scriptData = JSON.parse(inputValue);
+      const { configFormatted } = parseScriptArray(scriptData);
+      setPreviewConfig(configFormatted);
+    } catch {
+      setPreviewConfig(null);
+    }
+  }, [inputValue]);
 
   const handleSave = () => {
     console.log('Save button clicked');
@@ -92,63 +182,7 @@ function ConfigApp() {
     try {
       // Parse the JSON script
       const scriptData = JSON.parse(inputValue);
-      
-      if (!Array.isArray(scriptData)) {
-        setValidationMessage('❌ Script must be a JSON array');
-        setValidationStatus('error');
-        return;
-      }
-
-      // Extract character IDs (skip first meta object)
-      // Handle both formats:
-      // Format v1: [{"id": "_meta", ...}, {"id": "character"}, ...]
-      // Format v2: [{"id": "_meta", ...}, "character1", "character2", ...]
-      const characters = scriptData
-        .slice(1) // Skip first element (meta object)
-        .map(item => {
-          // Return the character ID (either the string itself or the id property)
-          //Remove any non-letter values and lowercase the rest 
-          return typeof item === 'string' ? item.replace(/[^a-zA-Z]/g, '').toLowerCase() : item.id.replace(/[^a-zA-Z]/g, '').toLowerCase();
-        })
-
-      if (characters.length === 0) {
-        setValidationMessage('❌ No valid characters found in script');
-        setValidationStatus('error');
-        return;
-      }
-
-      const invalidCharacters = characters.filter(item => roles[item] === undefined);
-      if (invalidCharacters.length > 0) {
-        setValidationMessage('❌ Invalid character found in script: ' + invalidCharacters.join(', '));
-        setValidationStatus('error');
-        return;
-      }
-
-      // Transform to test_config format (categorized by team)
-      // Extract meta data from first element
-      const metaItem = scriptData[0];
-      
-      const configFormatted = {
-        name: metaItem?.name || "",
-        author: metaItem?.author || "",
-        roles: {
-          townsfolk: [],
-          outsider: [],
-          minion: [],
-          demon: [],
-          traveller: [],
-          fabled: [],
-          loric: []
-        }
-      };
-
-      // Categorize characters by team
-      characters.forEach(characterId => {
-        const role = roles[characterId];
-        if (role && configFormatted.roles[role.team]) {
-          configFormatted.roles[role.team].push(characterId);
-        }
-      });
+      const { configFormatted, characterCount } = parseScriptArray(scriptData);
       console.log('Config format:', configFormatted);
 
       // Save to Twitch
@@ -159,9 +193,10 @@ function ConfigApp() {
         version,
         JSON.stringify(configFormatted)
       );
+      setSavedConfig(configFormatted);
 
       // Show success message
-      setValidationMessage(`✅ Configuration saved successfully! (${characters.length} characters)`);
+      setValidationMessage(`✅ Configuration saved successfully! (${characterCount} characters)`);
       setValidationStatus('valid');
 
       console.log('Save successful');
@@ -171,11 +206,15 @@ function ConfigApp() {
       if (err instanceof SyntaxError) {
         setValidationMessage('❌ Invalid JSON format. Please check your script syntax.');
       } else {
-        setValidationMessage('❌ Error saving configuration: ' + err.message);
+        setValidationMessage('❌ ' + err.message);
       }
       setValidationStatus('error');
     }
   };
+
+  const displayedConfig = previewConfig || savedConfig;
+  const displayedScriptName = displayedConfig?.name || 'None';
+  const displayedCharacterCount = countAllRoleTypes(displayedConfig?.roles);
 
   return ( 
     <div className={`extension-container${isDarkMode ? ' dark' : ''}`}>
@@ -183,10 +222,8 @@ function ConfigApp() {
         <div className="header">  
           <h1>Configure displayed script</h1>
           <div className="config-current">
-            <em>Current script:</em> &nbsp;{testFormatted.name}&nbsp; (
-                {
-                  testFormatted.roles.townsfolk.length + testFormatted.roles.outsider.length + testFormatted.roles.minion.length + testFormatted.roles.demon.length + testFormatted.roles.traveller.length + testFormatted.roles.fabled.length
-                }
+            <em>Current script:</em> &nbsp;{displayedScriptName}&nbsp; (
+                {displayedCharacterCount}
               &nbsp;characters)
           </div>
           <div className="config-instruct">
@@ -200,9 +237,9 @@ function ConfigApp() {
               Choose one of the Base 3 editions:
             </label>
             <select value={option} onChange={onChange}>
-              <option selected="selected" value="" disabled>Select an edition...</option>
+              <option value="" disabled>Select a script...</option>
               {Object.entries(scripts).map(([scriptName, scriptRoles]) => (
-                <option value={scriptName}>
+                <option key={scriptName} value={scriptName}>
                   {scriptName}
                 </option>
               ))}
