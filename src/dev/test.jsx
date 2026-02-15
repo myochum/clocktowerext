@@ -9,7 +9,7 @@ function TestWrapper() {
 
   useEffect(() => {
     // Load test config and mock Twitch API
-    fetch('../test_config.txt')
+    fetch('/dev/test_config.txt')
       .then(response => response.text())
       .then(text => {
         const scriptData = JSON.parse(text);
