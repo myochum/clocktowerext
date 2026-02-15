@@ -13,7 +13,10 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:test": "INCLUDE_TEST_ENTRY=1 vite --open /dev/test.html",
     "build": "vite build",
+    "package:verify": "sh -c 'if unzip -l clocktowerext.zip | rg -q \"( dev/|/dev/| test_|/test_)\"; then echo \"ERROR: clocktowerext.zip contains dev/test files\"; exit 1; else echo \"OK: zip contains no dev/test files\"; fi'",
+    "package:twitch": "npm run build && rm -f clocktowerext.zip && (cd build && zip -r -q ../clocktowerext.zip . -x \"dev/*\" \"*/dev/*\" \"test_*\" \"*/test_*\") && npm run package:verify",
     "preview": "vite preview",
     "config": "vite --open /config.html",
     "start": "vite",

@@ -23,12 +23,17 @@ if (certsExist) {
   console.log('⚠️  Using Vite default HTTPS (may cause certificate warnings)')
 }
 
+const testEntryPath = __dirname + 'src/dev/test.html'
+const includeTestEntry = process.env.INCLUDE_TEST_ENTRY === '1' && fs.existsSync(testEntryPath)
+
+if (process.env.INCLUDE_TEST_ENTRY === '1' && !fs.existsSync(testEntryPath)) {
+  console.log(`⚠️  INCLUDE_TEST_ENTRY=1 but missing file: ${testEntryPath}`)
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      fastRefresh: false
-    })
+    react()
   ],
   base: './',
   root: 'src',
@@ -43,7 +48,7 @@ export default defineConfig({
         config: __dirname + '/src/config.html',
         mobile: __dirname + '/src/mobile.html',
         video: __dirname + '/src/video.html',
-        test: __dirname + '/src/dev/test.html'
+        ...(includeTestEntry ? { test: testEntryPath } : {})
       }
     }
   },
